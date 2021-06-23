@@ -1,0 +1,503 @@
+Host:		主机:
+Port:		端口:
+User:		用户:
+Password:	密码:
+This is the connect dialog. You should use it to connect to a Cobalt Strike (Aggressor) team server.		连接到Cobalt Strike Teamserver
+New Profile	新建配置
+Connect		连接
+Help		帮助
+
+Add			添加
+Remove		删除
+Edit		编辑
+Restart		重启
+Load		加载
+Unload		卸载
+Reload		重新加载
+Copy		复制
+Cut			剪切
+Paste		粘贴
+Clear		清空
+Export		导出
+Close		关闭
+<html><body><strong>Disconnected from server</strong></body></html>		<html><body><strong>已从服务器断开连接</strong></body></html>
+Choose		选择
+Help		帮助
+Sync Files	下载到本地
+Kill		终止
+Refresh		刷新
+Inject		注入
+Log Keystrokes	键盘记录
+Screenshot		屏幕截图
+Steal Token		令牌窃取
+Upload...		上传...
+Make Directory	创建目录
+List Drives		列出磁盘
+Note...			备注...
+Copy URL		复制URL
+Stop			停止
+Tunnel			隧道
+Import			导入
+Connect			连接
+Options...		选项...
+Cancel			取消
+Login			登录
+Reset			重置
+About			关于
+Clone			克隆
+Deploy			部署
+Preview			预览
+Set				设置
+Success			成功
+
+Family			字体
+Style			字形
+Size			字号
+
+Color (Service)		颜色标记（服务）
+
+# BeaconChooser.java
+Choose a Beacon		选择Beacon会话
+
+# BrowserPivotSetup.java
+Browser Pivot		浏览器代理
+Proxy Server Port:		代理服务器端口:
+
+# CloneSiteDialog.java
+Clone Site			网站克隆
+Clone URL:			克隆URL:
+Local URI:			本地URI:
+Local Host:			本地Host:
+Local Port:			本地端口:
+Attack:				攻击:
+Enable SSL			启用SSL
+Log keystrokes on cloned site		在克隆站点上启用键盘记录
+The site cloner copies a website and fixes the code so images load. You may add exploits to cloned sites or capture data submitted by visitors		网站克隆可以克隆一个目标站点并修复代码使得图片可以正常加载，还可以在克隆后的网站中植入漏洞利用或者获取用户提交的数据。
+VerifyFingerprint		服务器指纹确认
+
+# CovertVPNSetup.java
+Deploy VPN Client	部署VPN客户端
+Local Interface:		本地网卡:
+Clone host MAC address		克隆主机MAC地址
+
+# CredentialDialog.java
+Choose a Credential		选择凭证
+New Credential			新建凭证
+Edit Credential			编辑凭证
+Realm:		域:
+Note:		备注:
+Source:		来源:
+Host:		主机:
+Edit credential store.		编辑凭证信息
+Color		颜色
+Realm...		域...
+Exported Credentials		密码凭证已导出
+
+# ElevateDialog.java
+Copied text to clipboard		复制成功
+Elevate		权限提权
+Listener:		监听器:
+Exploit:		提权方式:
+Launch			运行
+Attempt to execute a listener in an elevated context.		尝试以高权限启动一个Beacon会话
+
+# ExportDataDialog.java
+Export Data		导出数据
+
+# ExportReportDialog.java
+Export Report		导出报告
+Short Title:		主标题:
+Long Title:			副标题:
+Description:		描述:
+Output:				输出格式:
+Mask email addresses and passwords		给理邮箱地址和密码信息打马
+
+# GoldenTicketDialog.java
+Golden Ticket		黄金票据
+Domain:				域:
+Domain SID:			域SID:
+KRBTGT Hash:		krbtgt哈希:
+Build				生成
+This dialog generates a golden ticket and injects it into the current session.		生成黄金票据并注入到当前会话中
+
+# HostFileDialog.java
+Host File			文件托管
+File:				文件:
+Choose file			选择文件
+Mime Type:			Mime类型:
+Host a file through Cobalt Strike's web server		通过Cobalt Strike的Web服务器托管一个文件
+
+# HTMLApplicationDialog.java
+HTML Application Attack		HTA文档
+Method:						运行方式
+This package generates an HTML application that runs a payload.		生成HTA文档加载运行payload
+Congrats. You're the owner of an HTML app package.					恭喜，HTA文档生成成功
+
+# InterfaceDialog.java
+Setup Interface		新建虚拟网卡
+Interface:			网卡名:
+"MAC Address:		MAC地址:
+Local Port:			本地端口:
+Channel:			通信模式:
+Start a network interface and listener for CovertVPN. When a CovertVPN client is deployed, you will have a layer 2 tap into your target's network.		为CovertVPN新建一个虚拟机网卡和监听器。当部署CovertVPN客户端后，你将相当于在目标网络中拥有一个二层网络的tap接口。
+
+# JavaSignedAppletDialog.java
+Self-signed Applet Attack		自签名Applet攻击
+This package sets up a self-signed Java applet. This package will spawn the specified listener if the user gives the applet permission to run.		搭建一个自签名Java Applet的攻击URL，如果用户允许Applet运行，将会执行指定监听器生成的恶意代码。
+
+# JavaSmartAppletDialog.java
+Smart Applet Attack			智能Applet攻击
+<html><body>The Smart Applet detects the Java version and uses an embedded exploit to disable the Java security sandbox. This attack is cross-platform and cross-browser.<p><b>Vulnerable Java Versions</b></p><ul><li>Java 1.6.0_45 and below</li><li>Java 1.7.0_21 and below</li></ul></body></html>		<html><body>智能Applet将自动探测用户Java版本，使用内置的漏洞进行沙箱逃逸并执行恶意代码。<p><b>存在漏洞的Java版本</b></p><ul><li>Java 1.6.0_45 及以下</li><li>Java 1.7.0_21 及以下</li></ul></body></html>
+
+# JumpDialogAlt.java
+Session:		会话:
+Use session's current access token		使用会话的当前访问令牌（access token）
+
+# MailServerDialog.java
+Mail Server		邮件服务器
+SMTP Host:		SMTP主机:
+SMTP Port:		SMTP端口:
+Username:		用户名:
+Random Delay:	随机延迟
+Connection:		连接方式
+
+# MakeTokenDialog.java
+Make Token		创建令牌
+
+# OfficeMacroDialog.java
+Macro Instructions		宏文档创建步骤
+Copy Macro				复制宏代码
+MS Office Macro			Office宏
+This package generates a VBA macro that you may embed into a Microsoft Word or Excel document. This attack works in x86 and x64 Office on Windows.		生成可植入到Word或Excel文档中的VBA宏代码，同时支持Windows平台的x86和x64版本的Office软件。
+<html>_LF__TAB_<body>_LF__TAB__TAB_<p>Follow these steps to add this Macro to a Microsoft Word or Excel document:</p>_LF__LF__TAB__TAB_<ol>_LF__TAB__TAB__TAB_<li>Open Microsoft Word or Excel</li>_LF__TAB__TAB__TAB_<li>Go to <strong>View</strong> -&gt; <strong>Macros</strong> -&gt; <strong>View Macros</strong></li>_LF__TAB__TAB__TAB_<li>Change <strong>Macros in</strong> to the current file</li>_LF__TAB__TAB__TAB_<li>Give your macro a name (any name is OK)</li>_LF__TAB__TAB__TAB_<li>Click <strong>Create</strong></li>_LF__TAB__TAB__TAB_<li>Clear the editor</li>_LF__TAB__TAB__TAB_<li>Press <strong><u>Copy Macro</u></strong> to copy the macro to your clipboard.</li>_LF__TAB__TAB__TAB_<li>Paste the macro</li>_LF__TAB__TAB__TAB_<li>Close the macro editor window</li>_LF__TAB__TAB__TAB_<li>Save the document as a macro-enabled document</li>_LF__TAB__TAB_</ol>_LF__TAB_</body>_LF_</html>_LF_		<html>_LF__TAB_<body>_LF__TAB__TAB_<p>通过以下步骤将宏代码添加到Word或Excel文档中:</p>_LF__LF__TAB__TAB_<ol>_LF__TAB__TAB__TAB_<li>打开Word或者Excel</li>_LF__TAB__TAB__TAB_<li>在菜单栏选择<strong>视图</strong> -&gt; <strong>宏</strong> -&gt; <strong>查看宏</strong></li>_LF__TAB__TAB__TAB_<li>修改 <strong>宏的位置</strong> 为当前文件</li>_LF__TAB__TAB__TAB_<li>在"宏名"中输入一个名字 (任意名字都可以)</li>_LF__TAB__TAB__TAB_<li>点击 <strong>创建</strong></li>_LF__TAB__TAB__TAB_<li>清空编辑器内容</li>_LF__TAB__TAB__TAB_<li>点击下方 <strong><u>复制宏代码</u></strong> 按钮</li>_LF__TAB__TAB__TAB_<li>粘贴到宏编辑器中</li>_LF__TAB__TAB__TAB_<li>关闭宏编辑器窗口</li>_LF__TAB__TAB__TAB_<li>保存文档为支持宏的格式</li>_LF__TAB__TAB_</ol>_LF__TAB_</body>_LF_</html>_LF_
+
+# OneLinerDialog.java
+PowerShell One-liner		PowerShell一句话
+Use x64 payload				使用x64 payload
+Generate a single use one-liner that runs payload within this session.		在当前会话中生成一个单次使用的PowerShell一句话用于运行payload
+
+# PayloadGeneratorDialog.java
+Payload Generator			Payload生成器
+Generate					生成
+This dialog generates a payload to stage a Cobalt Strike listener. Several output options are available.		生成stage payload，支持多种输出格式
+
+# PayloadGeneratorStageDialog(隐藏功能，未启用)
+
+# PivotListenerSetup.java
+New Listener		新建监听器
+Edit Listener		编辑监听器
+Name:				名字:
+Listen Host:		监听地址:
+Listen Port:		监听端口:
+Session				会话
+A pivot listener is a way to use a compromised system as a redirector for other Beacon sessions.		转发监听器可以利用已攻陷的机器作为代理，为其他Beacon会话的中转网络流量，即内网其他机器可通过连接攻陷机器上线。
+Started Listener	监听器已启动
+
+# PortScanDialog.java
+Scan			扫描
+Ports			端口
+Max Sockets		最大连接数量
+
+# PortScanDialogLocal.java
+Ports:			端口:
+Max Sockets:	最大连接数量:
+Discovery:		存活探测方法:
+
+# PreferencesDialog.java
+Preferences				偏好设置
+Saved preferences		偏好设置已保存
+
+Options to configure Cobalt Strike.		Cobalt Strike配置选项
+Tab Activity:		活动标签颜色:
+Toolbar:			工具栏:
+Show toolbar in main window		在主窗口中显示工具栏
+VNC Ports:			VNC端口范围:
+GUI Font:			界面字体:
+Restart Cobalt Strike for the GUI Font change to take effect		修改界面字体需要重启Cobalt Strike后生效
+
+Console		控制台
+These options control the look of Cobalt Strike's consoles.			Cobalt Strike控制台显示配置
+Font:			字体:
+Choose a font	选择字体
+Foreground:		前景色:
+Background:		背景色:
+Highlight:		高亮色:
+Timestamps:		时间戳:
+Show timestamps with console messages		在控制台消息前添加时间戳
+
+Fingerprints	服务器指纹
+Fingerprints:	服务器指纹
+This panel is a list of team server SSL cert SHA-1 hashes. You may remove trusted hashes here.		Teamserver SSL证书SHA-1哈希列表
+
+Graph			拓补透视图
+These options control the look of Cobalt Strike's graph views.		Cobalt Strike拓补透视图显示配置
+Font:			字体:
+Foreground:		前景色:
+Background:		背景色:
+Selection:		选中色:
+Auto Layout:	自动布局:
+Save			保存
+
+Reporting		报告生成
+These options allow you to customize Cobalt Strike's report template and load custom reports.	自定义Cobalt Strike报告模板，加载自定义报告	
+Accent Color:	强调色:
+Reports:		自定义报告:
+Statusbar		状态栏
+These options control the look of the statusbars within Cobalt Strike's consoles.		Cobalt Strike控制台下方状态栏配置
+Foreground:		前景色:
+Background:		背景色:
+
+This panel is a list of saved connection profiles. You may remove stored profiles here.		已保存的连接配置信息
+Profiles:		连接配置:
+
+# ProxyServerDialog.java
+(Manual) Proxy Settings		代理设置（手动）
+Proxy Type:		代理类型:
+Proxy Host:		代理地址:
+Proxy Port:		代理端口:
+Ignore proxy settings; use direct connection		忽略代理设置，直接连接网络
+<html><body><font color="red">WARNING:</font> These values are placed inside of your Beacon payload AND they are recoverable.</body></html>		<html><body><font color="red">警告:</font> 这些代理配置信息将写到payload中，可被逆向还原</body></html>
+
+# ScListenerChooser.java
+Choose a payload				选择payload
+Choose a payload to stage		选择stage payload
+
+This feature requires a payload stager. Only payloads with hosted payload stages (e.g., HTTP/S and DNS Beacons) are shown here.		该功能需要支持stage的payload，只有支持stage的payload才会显示（如HTTP/S、DNS）
+This feature requires a payload stager. Only payloads with hosted payload stages are shown here. .host_stage is false in your profile. Expect fewer options.		该功能需要支持stage的payload，只有支持stage的payload才会显示。请注意profile中已设置.host_stage为false，可能导致无可用payload。
+
+# ScListenerDialog.java
+Payload Options				Payload选项
+Create a listener.			创建监听器
+Host Rotation Strategy:		地址轮询策略:
+Profile:					配置名称:
+Add a callback host			添加一个回连地址
+
+HTTP Hosts:				HTTP地址:
+HTTP Host (Stager):		HTTP地址(Stager):
+HTTP Port (C2):			HTTP端口(上线):
+HTTP Port (Bind):		HTTP端口(监听):
+HTTP Host Header:		HTTP Host头:
+HTTP Proxy:				HTTP代理:
+
+HTTPS Hosts:			HTTPS地址:
+HTTPS Host (Stager):	HTTPS地址(Stager):
+HTTPS Port (C2):		HTTPS端口(上线):
+HTTPS Port (Bind):		HTTPS端口(监听):
+HTTPS Host Header:		HTTPS Host头:
+HTTPS Proxy:			HTTPS代理:
+
+DNS Hosts:				DNS地址:
+DNS Host (Stager):		DNS地址(Stager):
+DNS Port (Bind):		DNS端口(监听):
+DNS Resolver:			DNS解析服务器:
+
+Port (Bind):			端口(监听):
+Bind to localhost only	仅监听localhost
+
+Port (C2):				端口(上线):
+
+Pipename (C2):			管道名(上线):
+
+HTTP Port (Stager):		HTTP端口(Stager):
+HTTPS Port (Stager):	HTTPS端口(Stager):
+
+# ScriptedWebStageDialog.java
+URI Path:				URI路径:
+Type:					类型:
+This attack hosts an artifact that delivers a full Cobalt Strike payload. The provided one-liner will allow you to quickly get a session on a target host.			生成并托管一个完整的Cobalt Strike Payload（Stageless），通过在目标机器上执行生成的一句话命令即可快速获得一个会话
+
+# SecureShellDialog.java
+SSH Login				SSH登录
+
+# SecureShellPubKeyDialog.java
+SSH Login (Key)			SSH登录（证书）
+PEM File:				证书文件:
+
+# SessionChooser.java
+Choose a Session		选择一个会话
+
+# SiteChooser.java
+Choose a site			选择一个站点
+
+# SOCKSSetup.java
+Start SOCKS				启动SOCKS代理
+
+# SpawnAsDialog.java
+Spawn As				以其他用户身份上线
+
+# SpearPhishDialog.java
+Spear Phish				邮件钓鱼
+Targets:				目标:
+Template:				模板:
+Attachment:				附件:
+Embed URL:				嵌入URL:
+Mail Server:			邮件服务器:
+Bounce To:				退信通知邮箱:
+
+# SystemInformationDialog.java
+System Information		系统信息
+This dialog provides information about your Cobalt Strike client and server. This information can greatly speed up support requests.		这里将显示Cobalt Strike客户端和服务器的相关信息
+
+# SystemProfilerDialog.java
+System Profiler			信息搜集
+Redirect URL:			跳转URL:
+Use Java Applet to get information		使用Java Applet收集信息
+The system profiler is a client-side reconaissance tool. It finds common applications (with version numbers) used by the user.			信息收集可以识别访问用户使用的常见软件（包括版本号）
+
+# TargetDialog.java
+Add a new target.		添加一个目标
+Add Target				添加目标
+Address:				IP地址:
+os:						操作系统:
+
+
+# WindowsExecutableDialog.java
+This dialog generates a Windows executable. Use Cobalt Strike Arsenal scripts (Help -> Arsenal) to customize this process.			生成Windows可执行程序，使用Cobalt Strike武器库脚本(帮助 -> 武器库)可以自定义生成文件
+Windows Executable		Windows可执行程序
+sign:					签名:
+Sign executable file	对可执行程序进行代码签名
+
+# WindowsExecutableStageDialog.java
+Export a stageless Beacon as a Windows executable. Use Cobalt Strike Arsenal scripts (Help -> Arsenal) to customize this process.		生成Windows可执行程序，使用Cobalt Strike武器库脚本(帮助 -> 武器库)可以自定义生成文件
+Windows Executable (Stageless)		Windows可执行程序(Stageless)
+
+# Tab页标题（注意后面的三个空格）
+Event Log   		事件日志   
+Targets   			目标列表   
+Script Console   	脚本控制台   
+Web Log   			Web日志   
+Sites   			Web站点   
+Listeners   		监听器   
+Credentials   		密码凭证   
+Applications   		应用程序   
+Services   			服务列表   
+Processes   		进程列表   
+Screenshots   		屏幕截图   
+Proxy Pivots   		代理转发   
+Keystrokes   		键盘记录   
+Downloads   		下载列表   
+Scripts   			脚本管理器   
+Interfaces   		VPN网卡   
+
+# SafeDialogs.openFile
+Select Reflective DLL		选择反射加载的DLL文件
+Save to...					保存至...
+Save AutoPlay files to...	保存自动播放文件至...
+Select ticket to use		选择票据文件
+Select script to import		选择脚本文件
+Select shellcode to inject	选择shellcode文件
+Select PEM file				选择证书文件
+Select file to upload		选择上传文件
+Sync downloads to?			下载文件至...
+Load a script				加载脚本
+Choose a file				选择文件
+
+# afeDialogs.chooseColor
+pick a color				选择颜色
+
+# SafeDialogs.ask
+Set Domain to:				设置域名为:
+Set Note to:				设置备注为:
+Which folder?				文件夹名字？
+
+# 
+Would you like to take a single screenshot?_LF__LF_Press 'Yes' to take a single screenshot._LF__LF_Press 'No' to take continuous screenshots.		是否截取一次屏幕?_LF__LF_点击'是'截取一次屏幕_LF__LF_点击'否'进行持续屏幕监控
+Tasked Beacon to take screenshot				已添加截取一次屏幕任务
+Tasked Beacon to run screenwatch				已添加持续屏幕监控任务
+Pushed screenshot to team server (active tab)	已发送截屏到Teamserver（当前Tab）
+Pushed screenshot to team server (window)		已发送截屏到Teamserver（整个窗口）
+Pushed screenshot to team server				已发送截屏到Teamserver
+Tasked Beacon to log keystrokes					已启动键盘记录器
+Tasked Beacon to steal a token					已添加令牌窃取任务
+Download complete!								下载完成！
+I need a template to show you a preview!		需要指定模板才能进行预览
+I need a target to show you a preview!			需要指定目标才能进行预览
+I need a server to send phishes through.		需要指定发送邮件的服务器
+DNS Resolver is not a valid IP V4 Address.		DNS解析服务器不是有效的IPv4地址
+
+User is already connected.					该用户名已连接
+You clicked									你点击了
+Please select or add a VPN interface		请选择或添加一个VPN网卡
+Please select a network interface			请选择一个网卡
+Hey, I can't find that file!				无法找到文件
+Hey, your URI needs to start with a /		URI需要以/开头
+You must select a Beacon session!			必须选择一个Beacon会话！
+Your Beacon must be admin to generate_LF_and use a token from creds or hashes			Beacon必须为高权限才能使用_LF_账密或hash生成的访问令牌
+You must select a Beacon session to scan through.		必须选择一个Beacon会话来进行扫描
+You must specify a user					必须指定用户
+You must specify a password				必须指定密码
+You must specify a port					必须指定端口
+Please import a target file				请导入目标列表
+Please choose a template message		请选择邮件模板
+Please provide a bounce address			请提供退信地址
+The template does not exist				模板文件不存在
+Hey, the attachment doesn't exist		附件文件不存在
+Common mistake! The mail server is a host:port, not a URL		邮件服务器格式为 "地址:端口", 而非URL
+Can only sign EXE and DLL files			只能对EXE和DLL文件进行代码签名
+Your listener needs a name				需要指定监听器名字
+Please select a payload					请选择payload
+Pipename (C2) need a value				需要指定管道名
+Pipename (C2) is too long. Max is 118 characters.		管道名超长，最多支持118个字符
+Host (Stager) value is required for a listener			需要指定监听器的Stager地址
+Please specify one value in the Host (Stager) field		仅支持指定一个Stager地址
+Please specify one or more Callback Hosts				请指定一个或多个上线回连地址
+/dev/net/tun does not exist on team server system.		Teamserver机器不存在/dev/net/tun网卡
+<html>Started service: cloned site<br />Copy and paste this URL to access it</html>				<html>启动服务：克隆站点<br />复制以下URL进行访问</html>
+<html>Started service: host file<br />Copy and paste this URL to access it</html>				<html>启动服务：文件托管<br />复制以下URL进行访问</html>
+<html>Started service: host applet<br />Copy and paste this URL to access it</html>				<html>启动服务：托管applet<br />复制以下URL进行访问</html>	
+<html>Started service: Scripted Web Delivery<br />Copy and paste this URL to access it</html>	<html>启动服务：Web投递<br />复制以下URL进行访问</html>
+<html>Started service: system profiler<br />Copy and paste this URL to access it</html>			<html>启动服务：信息收集<br />复制以下URL进行访问</html>
+
+# Tooltip
+Cortana script console				Cortana脚本控制台
+Log of events/chat messages			事件日志和聊天消息
+Log of web server activity			Web服务器访问日志
+Manage Cobalt Strike's web server	管理Cobalt Strike Web服务器
+Manage Cobalt Strike's listeners	管理Cobalt Strike监听器
+Manage credentials					管理凭证信息
+View system profiler results		查看信息收集结果
+Hosts that Cobalt Strike knows about	目标列表
+Services known by Cobalt Strike		服务列表
+Process Browser						进程浏览器
+File Browser						文件浏览器
+Screenshot browser					屏幕截图浏览器
+Beacon SOCKS Servers, port forwards, and reverse port forwards.		Socks代理服务器、端口转发、反向端口转发列表
+Keystroke browser					键盘记录浏览器
+Downloads browser					下载文件浏览器
+Manage your Aggressor scripts.		Aggressor脚本管理
+Manage Covert VPN Interfaces		管理Covert VPN网卡
+
+
+# Regex 仅支持JOptionPane.showOptionDialog
+# DialogUtils.showInfo
+[regex] Exported data to (.*)		已导出数据到${1}
+[regex] Report (.*) saved			报告文件${1}已保存
+[regex] Imported (.*) hosts?		已导入${1}个目标
+[regex] Saved (.*) to_LF_(.*)		已保存${1}文件至_LF_${2}
+[regex] Saved (.*)					已保存至${1}
+[regex] Updated and restarted listener: (.*)		已更新并重启监听器: ${1}
+[regex] Reloaded (.*)				已重新加载${1}
+[regex] Clone of (.*) is empty._LF_Try to connect with HTTPS instead.		${1} 克隆结果为空，_LF_请使用HTTPS重试。
+[regex] Could not clone: (.*)_LF_(.*)		无法克隆${1}_LF_${2}
+[regex] Unable to start web server:_LF_(.*)			无法启动Web服务器:_LF_${1}
+[regex] Import canceled: (.*) is not a recognized format		导入已取消: ${1} 文件格式无法识别
+[regex] Trouble processing (.*):_LF_(.*)		处理 ${1} 存在问题:_LF_${2}
+[regex] No x64 stager for listener (.*)			监听器${1}没有x64 stager
+[regex] No x86 stager for listener (.*)			监听器${1}没有x86 stager
+[regex] (.*) is not compatible with x64 stagers		${1}与x64 stager不兼容
+[regex] Could not start listener: _LF_(.*)		无法启动监听器:_LF_${1}
+[regex] Listener '(.*)' already exists.			监听器"${1}"已存在
+[regex] Unknown type: (.*)						未知类型: ${1}
+[regex] Could not generate (.*) payload for (.*)		${2}无法生成${1}类型的payload
+[regex] Your target file is in the wrong format._LF_Please check that the format is:_LF__LF_user@target<TAB>User's Name_LF__LF_Look at entry (.*):_LF_(.*)<TAB>(.*)		目标文件格式错误。_LF_支持的格式为: user@target<TAB>用户姓名_LF__LF_请检查第${1}行:_LF_${2}<TAB>${3}
+[regex] Unable to start profiler:_LF_(.*)		信息收集器启动失败
+[regex] No (.*) stager for (.*)					监听器${2}没有${1} stager
+[regex] Could not load (.*):_LF__LF_(.*)		无法加载 ${1} :_LF__LF_${2}
+[regex] Could not load (.*)_LF_(.*)				无法加载 ${1}_LF_${2}
+[regex] Port(.*) is a required value.			必须填写端口
+[regex] Port(.*) is not a valid number.			端口值非法
+[regex] Port(.*) is out of range for a port.	端口值不在有效范围之内（1-65535）
+[regex] Port (.*) is blocked by WinINet to prevent Cross Service/Request Forgery in Internet Explorer.			为防止IE出现CSRF漏洞，${1}端口已被WinINet拦截
+
+# setLable目前不支持regex
+# [regex] <html><body><font color="#8b0000"><strong>ERROR!</strong></font> (.*) <font color="#8b0000">pivot session does not exist</font></body></html>				<html><body><font color="#8b0000"><strong>错误!</strong></font> ${1} <font color="#8b0000">代理中转会话不存在</font></body></html>

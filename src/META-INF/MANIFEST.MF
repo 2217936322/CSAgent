@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: javassist.jar
+Premain-Class: com.fuckme.PreMain
+Can-Retransform-Classes: true
+Can-Redefine-Classes: true

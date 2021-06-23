@@ -1,0 +1,90 @@
+argue			命令行参数欺骗
+blockdlls			禁止子进程加载非微软签名的dll
+browserpivot			注入浏览器进程代理用户已认证身份（仅支持IE）
+cancel			取消正在下载的文件
+cd			跳转目录
+checkin			强制目标回连并更新状态（用于DNS上线，DNS模式下无新任务时目标不会回连Teamserver）
+chromedump			提取Chrome保存的账号密码、Cookies等信息
+covertvpn			部署Covert VPN客户端
+clear			清空beacon任务队列
+connect			通过TCP正向连接远程Beacon
+cp			复制文件
+dcsync			从域控提取密码hash
+desktop			远程VNC控制用户桌面
+dllinject		注入一个内存反射加载的dll到目标进程
+dllload			使用LoadLibrary方式在目标进程中加载一个dll
+download		下载文件
+downloads		列出所有正在下载的文件
+drives			列出所有磁盘盘符
+elevate			利用提权漏洞获取一个高权限Beacon
+execute			在目标上执行程序（无回显）
+execute-assembly	在目标上内存加载执行本地.NET程序
+exit			结束当前Beacon会话
+getprivs		在当前进程访问令牌（access token）中启用system特权
+getsystem		尝试获取SYSTEM用户权限
+getuid			获取当前进程访问令牌（access token）的用户信息
+hashdump		获取本地用户hash
+help			帮助信息
+inject			在指定进程中注入新的Beacon会话
+inline-execute		在当前会话中执行Beacon Object File
+jobs			列出所有后台任务
+jobkill			结束一个后台任务
+jump			在远程机器上植入Beacon（横向移动）
+kerberos_ccache_use		从ccache文件导入kerberos票据到当前会话中
+kerberos_ticket_purge	清空当前会话中的所有kerberos票据
+kerberos_ticket_use		从ticket文件中导入kerberos票据到当前会话中
+keylogger		开启键盘记录
+kill			结束指定进程
+link			通过命名管道正向连接远程Beacon
+logonpasswords		使用mimikatz获取密码和hash
+ls			列出目录文件
+make_token		创建进程访问令牌（access token），仅用于访问网络资源
+mimikatz		运行mimikatz
+mkdir			创建目录
+mode dns		使用DNS A记录作为数据通道（仅支持DNS上线Beacon）
+mode dns6		使用DNS AAAA记录作为数据通道（仅支持DNS上线Beacon）
+mode dns-txt		使用DNS TXT记录作为数据通道（仅支持DNS上线Beacon）
+mv			移动文件
+net			网络和主机探测工具（内置net命令）
+note			给当前会话添加备注信息
+portscan		网络端口扫描
+powerpick		内存执行Powershell命令（不调用powershell.exe）
+powershell		通过powershell.exe执行Powershell命令
+powershell-import	导入本地powershell脚本到当前会话中
+ppid			为所有新运行的进程设置伪造的父进程PID
+printscreen		使用PrintScr方式截屏
+ps			显示进程列表
+psinject		注入到指定进程后在内存中执行Powershell命令（不调用powershell.exe)
+pth			使用Mimikatz执行Pass-the-hash
+pwd			显示当前目录
+reg			查询注册表
+remote-exec		在远程机器上执行命令（横向移动）
+rev2self		恢复原始进程访问令牌（access token）
+rm			删除文件或文件夹
+rportfwd		反向端口转发（从Cobalt Strike Teamserver发起连接）
+rportfwd_local		反向端口转发（从Cobalt Strike客户端发起连接）
+run			在目标上执行程序（有回显）
+runas			以另一个用户身份执行程序
+runasadmin		以高权限执行程序
+runu			以另一个进程PID作为父进程PID，并以其用户身份执行程序
+screenshot		截屏
+screenwatch		屏幕监控，每隔一段时间截屏
+setenv			设置环境变量
+shell			使用cmd.exe执行命令
+shinject		注入shellcode到指定进程中
+shspawn			创建傀儡进程并注入shellcode到其中运行
+sleep			设置beacon回连间隔时间
+socks			启动SOCKS4a代理服务器
+socks stop		停止SOCKS4a代理服务器
+spawn			创建一个新Beacon会话
+spawnas			以另一个用户身份创建一个新Beacon会话
+spawnto			设置创建新进程时使用的可执行文件路径（傀儡进程的宿主exe文件路径）
+spawnu			以另一个进程PID作为父进程PID，并以其用户身份创建一个新Beacon会话
+spunnel			运行第三方agent shellcode并将其反向代理到控制端（从Cobalt Strike Teamserver发起连接）
+spunnel_local		运行第三方agent shellcode并将其反向代理到控制端（从Cobalt Strike客户端发起连接）
+ssh			通过SSH连接远程主机（使用账号密码认证）
+ssh-key			通过SSH连接远程主机（使用证书私钥认证）
+steal_token		从指定进程中窃取访问令牌（access token)
+timestomp		复制B文件的创建、访问、修改时间戳到A文件（文件时间戳伪造）
+unlink			断开与beacon的连接（用于通过TCP、命名管道连接的beacon）
+upload			上传文件

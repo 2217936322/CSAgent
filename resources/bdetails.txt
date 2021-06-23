@@ -1,0 +1,673 @@
+beacon> help remote-exec
+Use: remote-exec [方法] [目标] [命令]
+
+使用指定的 [方法] 在 [目标] 上执行 [命令]
+
+单独输入 "remote-exec" 可以查看 [方法] 列表
+
+beacon> help blockdlls
+Use: blockdlls [start|stop]
+
+使用二进制签名策略启动子进程，该策略会阻止非Microsoft DLL加载到子进程中
+
+
+使用 "blockdlls stop" 来禁用该策略
+
+此功能需要Windows 10 / Windows Server 2012或更高版本
+
+beacon> help argue
+Use: argue [命令] [假参数]
+     argue [命令]
+     argue
+
+当Beacon启动 [命令] 进程时，设置其命令行参数为 [假参数]，用于欺骗EDR等软件采集到的命令行参数
+这个选项不会影响 runu/spawnu、 runas/spawnas 以及 post-ex 任务
+
+使用 "argue [命令]" 来禁用针对特定 [命令] 的参数伪装功能
+
+单独输入 "argue" 可以列出所有定义了命令行参数伪装的程序
+
+beacon> help runasadmin
+Use: runasadmin [利用程序] [命令] [参数]
+
+尝试以高权限（过UAC）运行指定的[命令]
+
+单独输入 "runasadmin" 可以查看所有可用的本地 [利用程序]
+
+beacon> help setenv
+Use: setenv [变量] [值]
+
+设置环境变量
+
+beacon> help reg
+Use: reg query  [x86|x64] [根\路径]
+     reg queryv [x86|x64] [根\路径] [子项]
+
+使用 "query" 查询注册表中的键，会列出所有子项和值
+
+使用 "queryv" 查询注册表中的子项，仅列出子项及其值
+
+使用 HKLM, HKCR, HKCC, HKCU 或 HKU 来指定根
+
+指定 x86|x64 来强制查看特定的注册表
+
+beacon> help execute-assembly
+Use: execute-assembly [/本地绝对路径/file.exe] [参数]
+
+在目标上执行本地.NET程序，此命令会在一个临时进程中加载CLR并将.NET程序加载到其中运行
+
+beacon> help dllload
+Use: dllload [pid] [c:\目标上路径\file.dll]
+
+Load DLL into specified remote process via LoadLibrary(). The DLL must exist on the target.
+通过 LoadLibrary() 将DLL加载到指定的远程进程中，DLL必须在目标机器上存在
+
+beacon> help getprivs
+Use: getprivs
+
+在当前访问令牌上启用尽可能多的系统特权
+
+beacon> help kerberos_ticket_purge
+Use: kerberos_ticket_purge
+
+清除当前会话中的kerberos票据
+
+beacon> help kerberos_ccache_use
+Use: kerberos_ccache_use [/本地绝对路径/file.ccache]
+
+将Kerberos票据从本地ccache文件应用于当前会话
+
+beacon> help kerberos_ticket_use
+Use: kerberos_ticket_use [/本地绝对路径/file.ticket]
+
+将Kerberos票据从本地ticket文件应用于当前会话
+
+beacon> help kill
+Use: kill [进程pid]
+
+杀死指定的进程
+
+beacon> help ps
+Use: ps
+
+显示进程列表
+
+beacon> help timestomp
+Use: timestomp [文件A] [文件B]
+
+修改文件A的修改时间、访问时间和创建时间为文件B的时间
+
+beacon> help getuid
+Use: getuid
+
+打印与当前访问令牌关联的用户ID
+
+beacon> help rev2self
+Use: rev2self
+
+还原为原始访问令牌
+
+beacon> help steal_token
+Use: steal_token [pid]
+
+从进程中窃取访问令牌
+
+beacon> help getsystem
+Use: getsystem
+
+尝试获得SYSTEM权限
+
+beacon> help link
+Use: link [目标] [管道名]
+     link [目标]
+
+连接SMB Beacon并建立控制通道，所有对于SMB Beacon的命令请求都将通过当前Beacon会话
+可以指定一个显式的 [管道名] 以连接到特定管道。否则，将使用当前配置文件中的默认管道名
+
+beacon> help connect
+Use: connect [目标]
+     connect [目标] [端口]
+
+连接TCP Beacon并建立控制通道。所有对于TCP Beacon的命令请求都将通过当前Beacon会话
+
+使用 "unlink" 命令来断开TCP Beacon
+
+beacon> help cd
+Use: cd [目录]
+
+更改目标主机上的目录
+
+beacon> help checkin
+Use: checkin
+
+强制DNS Beacon回连并更新状态，Beacon会上传其主机元数据及键盘记录信息
+
+beacon> help clear
+Use: clear
+
+清空Beacon任务队列
+
+beacon> help download
+Use: download [file]
+
+下载一个文件，可以到 视图->下载列表 中看到下载成功的文件列表
+
+beacon> help shell
+Use: shell [命令] [参数]
+
+使用cmd.exe执行命令
+
+beacon> help powershell
+Use: powershell [cmdlet] [参数]
+
+使用powershell执行命令
+最后一次使用powershell-import导入的任何cmdlet也可以在这里使用
+
+beacon> help powershell-import
+Use: powershell-import [/本地绝对路径/script.ps1]
+
+从本地导入一个powershell脚本，后续powershell/powerpick命令可以
+调用该脚本中的cmdlet。一次只能使用一个导入脚本，再次导入会覆盖之前的脚本
+
+beacon> help execute
+Use: execute [程序] [参数]
+
+执行程序，不会阻塞当前进程，也不会返回输出
+
+beacon> help run
+Use: run [程序] [参数]
+
+执行程序，返回程序输出
+
+beacon> help exit
+Use: exit
+
+终止当前beacon会话
+
+beacon> help help
+Use: help [命令]
+
+显示命令帮助
+
+beacon> help inject
+Use: inject [pid] <x86|x64> [监听器]
+
+打开 [pid] 指定的进程并注入运行从 [监听器] 生成的shellcode
+
+beacon> help shinject
+Use: shinject [pid] <x86|x64> [/本地绝对路径/my.bin]
+
+打开 [pid] 指定的进程并注入运行本地shellcode文件
+
+beacon> help shspawn
+Use: shspawn <x86|x64> [/本地绝对路径/my.bin]
+
+新建傀儡进程，并注入运行本地shellcode文件
+
+beacon> help dllinject
+Use: dllinject [pid] [/本地绝对路径/my.dll]
+
+打开 [pid] 指定的进程并注入一个反射加载的本地DLL文件
+
+beacon> help keylogger
+Use: keylogger [pid] [x86|x64]
+     keylogger
+
+将键盘记录器注入 [pid] 指定的进程
+
+使用不带任何参数的 [keylogger] 命令会创建一个临时傀儡过程，并将键盘记录器注入其中
+
+终止键盘记录：使用 [jobs] 命令查找任务ID，然后使用 [jobkill] 命令结束任务
+
+beacon> help link
+Use: link [ip地址]
+
+链接到指定IP地址的Beacon会话
+
+beacon> help unlink
+Use: unlink [ip地址]
+     unlink [ip地址] [pid]
+
+断开与SMB 命名管道或TCP Beacon的连接
+
+指定IP地址或IP地址以及会话PID来断开特定Beacon的连接
+
+beacon> help message
+Use: message [消息]
+
+给用户弹出一条消息，这是一个傻逼命令
+
+beacon> help mode
+Use: mode [dns|dns6|dns-txt]
+
+设置Beacon的数据交换模式，仅对DNS Beacon有用
+
+dns模式
+--------
+使用DNS A记录请求获取任务。如果不能使用TXT记录，则使用此选项与DNS通信
+该模式将数据编码在DNS请求的hostname中进行传输
+
+dns6模式
+---------
+使用DNS AAAA记录请求获取任务。如果不能使用TXT记录，则使用此选项与DNS通信
+该模式将数据编码在DNS请求的hostname中进行传输
+
+dns-txt模式
+------------
+使用DNS TXT记录请求获取任务。该通道每个请求携带189个字节，而DNS A记录请求
+仅为4个字节，使用与其他DNS模式相同的技术发送数据
+
+beacon> help socks
+Use: socks [stop|port]
+
+在指定端口上启动SOCKS4a代理服务器，该服务器将通过当前Beacon中继网络连接
+
+使用 "socks stop" 命令停止SOCKS4a代理服务器
+
+Beacon会话处于睡眠状态时，流量不会中继。 使用 "sleep" 命令更改睡眠时间以减少延迟
+
+beacon> help sleep
+Use: sleep [时间(秒)] <抖动>
+
+更改Beacon回连的间隔睡眠时间。 使用 "sleep 0" 命令可强制Beacon每秒多次回连（实时交互）
+
+指定一个抖动值（0-99）可以让Beacon随机更改其睡眠时间
+
+beacon> help spawn
+Use: spawn [x86|x64] [监听器]
+     spawn [监听器]
+
+创建一个x86或x64傀儡进程，并注入运行从 [监听器] 生成的shellcode
+
+beacon> help spawnto
+Use: spawnto [x86|x64] [c:\目标上路径\whatever.exe]
+
+设置Beacon创建傀儡进程时使用的可执行文件路径，必须指定完整路径
+支持使用环境变量（例如％windir％\sysnative\rundll32.exe）
+
+请勿直接使用 "%windir%\system32\"，该路径会根据Beacon是x86还是x64而解析成不同的绝对路径
+x64请使用 "%windir%\sysnative\"
+x86请使用 "%windir%\syswow64\"
+
+当WOW64不存在时，Beacon将会把 "%windir%\syswow64\" 映射到 system32
+
+beacon> help upload
+Use: upload [/本地绝对路径/file]
+
+上传一个文件到目标机器
+
+beacon> help runas
+Use: runas [域\用户名] [密码] [命令] [参数]
+
+尝试以另一个用户身份执行程序。如果您未指定域，则Beacon将尝试认证为本地用户
+
+如果当前Beacon在SYSTEM权限上下文中，此命令通常会失败
+
+beacon> help pwd
+Use: pwd
+
+显示Beacon的当前工作目录
+
+beacon> help covertvpn
+Use: covertvpn [网卡] [ip地址]
+
+将Covert VPN部署到目标系统，必须拥有管理员权限才能正常使用
+
+可以通过 Cobalt Strike->VPN网卡 新建一个 [网卡]
+[ip地址] 是要将VPN客户端部署到目标机器网卡的IP地址
+
+beacon> help browserpivot
+Use: browserpivot [pid] [x86|x64]
+     browserpivot [stop]
+
+安装浏览器代理到 [pid] 指定的进程。 要劫持经过身份验证的Web会话，请确保该进程是一个
+"IE浏览器"的选项卡进程。IE浏览器选项卡进程的父进程一定是iexplore.exe
+
+使用 "browserpivot stop" 命令终止浏览器身份代理
+
+beacon> help desktop
+Use: desktop [pid] [x86|x64] [high|low]
+     desktop [high|low]
+
+在目标机器上启动一个VNC服务器并连接，可以指定VNC会话的图像质量高低
+
+beacon> help jobs
+Use: jobs
+
+列出长时间运行的后台任务
+
+beacon> help jobkill
+Use: jobkill [job ID]
+
+终止一个长时间运行的后台任务
+
+beacon> help hashdump
+Use: hashdump
+
+抓取密码哈希值（警告：会注入LSASS进程）
+
+beacon> help mimikatz
+Use: mimikatz [模块::命令] <参数>
+     mimikatz [!模块::命令] <参数>
+     mimikatz [@模块::命令] <参数>
+
+运行mimikatz命令
+
+用 ! 使mimikatz在运行命令之前提升到SYSTEM，有一些命令需要高权限
+
+用 @ 使mimikatz在运行命令之前模拟Beacon的线程访问令牌
+这对于需要与远程系统交互的mimikatz命令很有帮助（例如 lsadump::dcsync）
+
+beacon> help pth
+Use: pth [域\用户名] [NTLM哈希]
+
+使用mimikatz生成并模拟一个访问令牌，该令牌使用指定的域、用户和NTLM哈希作为单点登录凭据
+当需要与网络资源进行交互时，Beacon将传递此哈希
+
+beacon> help screenshot
+Use: screenshot [pid] [x86|x64]
+     screenshot 
+
+将屏幕截图工具注入 [pid] 指定的进程
+
+使用不带参数的 [screenshot] 命令可以启动一个临时傀儡进程，并将屏幕截图工具注入其中
+
+屏幕截图工具会在截屏一次后退出
+
+beacon> help printscreen
+Use: printscreen [pid] [x86|x64]
+     printscreen 
+
+将屏幕截图工具注入 [pid] 指定的进程
+
+使用不带参数的 [printscreen] 命令可以启动一个临时傀儡进程，并将屏幕截图工具注入其中
+
+Printscreen会强制按下PrintScr按键，然后从剪贴板中抓取屏幕截图，然后退出
+截图完成后，此命令将清除剪贴板内容
+
+这种截屏方法无法长期在后台运行...因为...讲道理定期操作剪切板并不是很好的OPSEC
+
+beacon> help screenwatch
+Use: screenwatch [pid] <x86|x64>
+     screenwatch 
+
+将屏幕监控工具注入 [pid] 指定的进程
+
+使用不带任何参数的 "screenwatch" 命令可以启动一个临时傀儡进程，并将屏幕监控工具注入其中运行
+
+Screenwatch会定时发送用户桌面的屏幕截图（每次Beacon回连时发送一次），直到监控工具结束
+如果用户处于空闲状态，则屏幕监控工具将每三分钟拍摄一次新的屏幕截图
+
+终止屏幕监控：使用 [jobs] 命令查找任务ID，然后使用 [jobkill] 命令结束任务
+
+beacon> help make_token
+Use: make_token [域\用户名] [密码]
+
+克隆当前访问令牌，并在访问网络资源时设置为指定的用户名和密码
+此命令不会验证您提供的凭据，并且对本地操作没有影响
+
+beacon> help downloads
+Use: downloads
+
+列出当前正在下载的文件
+
+beacon> help cancel
+Use: cancel [*文件名*]
+
+取消当前正在进行的文件下载，文件名支持使用通配符
+
+beacon> help rportfwd
+Use: rportfwd [绑定端口] [转发目的主机] [转发目的端口]
+     rportfwd stop [绑定端口]
+
+绑定目标主机上的指定端口。当目标主机的 [绑定端口] 被访问时，Cobalt Strike Teamserver将与
+[转发目的主机/端口] 建立连接，并使用Beacon在两个网络连接之间中继流量
+
+beacon> help rportfwd_local
+Use: rportfwd_local [绑定端口] [转发目的主机] [转发目的端口]
+     rportfwd_local stop [绑定端口]
+
+绑定目标主机上的指定端口。当目标主机的 [绑定端口] 被访问时，Cobalt Strike 客户端将与
+[转发目的主机/端口] 建立连接，并使用Beacon在两个网络连接之间中继流量
+
+beacon> help elevate
+Use: elevate [利用程序] [监听器]
+
+尝试使用指定的 [利用程序] 创建一个高权限Beacon会话
+
+单独输入 "elevate" 可以查看所有可用的本地 [利用程序]
+
+beacon> help jump
+Use: jump [利用程序] [目标] [监听器]
+
+尝试使用指定的 [利用程序] 在远程 [目标] 上创建一个Beacon会话
+
+单独输入 "jump" 可以查看所有可用的远程 [利用程序]
+
+beacon> help mkdir
+Use: mkdir [文件夹]
+
+创建文件夹
+
+beacon> help ls
+Use: ls [文件夹]
+
+查看文件夹中的文件
+
+beacon> help rm
+Use: rm [文件夹]
+
+删除一个文件或者文件夹
+
+beacon> help drives
+Use: drives
+
+列出当前系统上的磁盘驱动器
+
+beacon> help spawnas
+Use: spawnas [域\用户名] [密码] [监听器]
+
+尝试以另一个用户身份启动Beacon会话。如果您未指定域，则Beacon将尝试认证为本地用户
+
+如果当前Beacon在SYSTEM权限上下文中，此命令通常会失败
+可以先通过 "make_token" 命令创建访问令牌，再创建Beacon会话
+
+beacon> help portscan
+Use: portscan [目标列表] [端口列表] [arp|icmp|none] [最大连接数]
+
+对指定的 [主机列表] 启动端口扫描
+
+[目标列表] 是要扫描的主机列表，使用逗号分隔。 也可以指定IPv4
+地址段（例如192.168.1.128-192.168.2.240，192.168.1.0/24）
+
+[端口列表] 是要扫描的端口列表，使用逗号分隔。 也可以指定端口范围（例如1-65535）
+
+[arp|icmp|none] 选项用于指示端口扫描器如何确定主机是否存活
+ARP选项使用ARP来查看系统是否响应指定的地址，ICMP选项发送ICMP回显请求
+none选项告诉端口扫描器假定所有主机均存活
+
+[最大连接数] 选项可限制端口扫描器同时尝试连接的数量，端口扫描器使用异步I/O，
+能够一次处理大量连接，越高的连接数将扫的越快，默认值为1024
+
+beacon> help net
+Use: net [命令] [参数]
+
+Beacon内置的主机和网络枚举探测工具。 支持的 [命令] 列表有：
+
+        命令                 描述
+        -------             -----------
+        computers           列出域中的主机（通过组）
+        domain              显示该主机的域
+        dclist              列出域控制器
+        domain_controllers  列出域控制器（通过组）
+        domain_trusts       列出域信任
+        group               列出组中的成员组和成员用户
+        localgroup          列出本地组中的成员组和成员用户
+        logons              列出登录到指定主机的用户
+        sessions            列出指定主机上的会话
+        share               列出指定主机上的共享
+        user                列出用户和用户信息
+        time                显示指定主机上的时间
+        view                列出域中的主机（通过browser服务）
+
+使用 "help net [命令]" 了解更多信息
+
+beacon> help net dclist
+Use: net dclist <域>
+
+列出指定 [域] 的域控制器。 如果未指定任何域，则此命令将使用当前域
+
+beacon> help net domain
+Use: net domain
+
+查找此系统的活动目录域
+
+beacon> help net domain_trusts
+Use: net domain_trusts <域>
+
+列出指定 [域] 的域信任。 如果未指定任何域，则此命令将使用当前域
+
+beacon> help net group
+Use: net group <\\目标> <用户组>
+
+使用不带参数的 "net group" 命令可以枚举域控制器上的用户组
+可以使用 <\\目标> 选项指定特定的域控制器，指定 <用户组> 以获取域控制器上指定组中的用户列表
+
+beacon> help net localgroup
+Use: net localgroup <\\目标> <用户组>
+
+使用不带参数的 "net localgroup" 命令可以枚举此系统上的本地用户组
+指定 <\\目标> 以枚举远程系统上的本地组，指定 <用户组> 以获取远程系统上本地用户组中的用户列表
+
+beacon> help net logons
+Use: net logons <\\目标>
+
+列出登录到 [目标] 机器的用户
+
+beacon> help net sessions
+Use: net sessions <\\目标>
+
+列出 [目标] 机器上的会话
+
+beacon> help net share
+Use: net share <\\目标>
+
+列出 [目标] 机器上的共享
+
+beacon> help net time
+Use: net time <\\目标>
+
+列出 [目标] 机器上的时间
+
+beacon> help net user
+Use: net user <\\目标> <用户>
+
+使用不带参数的 "net user" 命令列出此系统上的用户，指定 [目标] 可列出远程系统上的用户
+指定一个 [用户] 以获取有关该用户的信息
+
+beacon> help net view
+Use: net view <域>
+
+使用不带参数的 "net view" 命令列出当前域上的主机。指定一个 [域] 可列出另一个域上的主机。
+
+beacon> help net computers
+Use: net computers <域.FQDN>
+
+使用不带参数的 "net computers" 命令列出指定域上Domain Computers和Domain Controllers组中的主机，
+当指定域名时需要指定域的全名（FQDN）
+
+beacon> help net domain_controllers
+Use: net domain_controllers <域.FQDN>
+
+使用不带参数的 "net domain_controllers" 命令列出指定域上Domain Controllers组中的主机，
+当指定域名时需要指定域的全名（FQDN）
+
+beacon> help logonpasswords
+Use: logonpasswords
+
+使用mimikatz抓取明文密码和NTLM哈希
+
+beacon> help note
+Use: note [text]
+
+给Beacon设置一个备注
+
+beacon> help dcsync
+Use: dcsync [域.fqdn] <域\用户名>
+
+使用mimikatz从域控制器中提取所有域用户的NTLM哈希，指定一个用户可以仅获取其NTLM哈希
+此命令需要域管理员信任关系
+
+beacon> help powerpick
+Use: powerpick [cmdlet] [参数]
+
+使用非托管Powershell执行命令，不会调用powershell.exe
+最后一次使用powershell-import导入的任何cmdlet也可以在这里使用
+
+beacon> help psinject
+Use: psinject [pid] [x86|x64] [cmdlet] [参数]
+
+注入非托管Powershell到 [pid] 指定的进程中，然后执行 [cmdlect]，不会调用powershell.exe
+最后一次使用powershell-import导入的任何cmdlet也可以在这里使用
+
+beacon> help ssh
+Use: ssh [目标:端口] [用户名] [密码]
+
+启动SSH客户端并尝试用账号密码登录到指定目标
+
+beacon> help ssh-key
+Use: ssh [目标:端口] [用户名] [/本地绝对路径/key.pem]
+
+启动SSH客户端并尝试用私钥文件登录到指定目标
+
+beacon> help cp
+Use: cp [源文件] [目标文件]
+
+将 [源文件] 复制到指定的 [目标文件] 位置
+
+beacon> help mv
+Use: mv [源文件] [目标文件]
+
+将 [源文件] 移动到指定的 [目标文件] 位置
+
+beacon> help ppid
+Use: ppid [pid]
+
+使用指定的PID作为父进程启动Beacon会话。runas命令不受影响，但其他大多数命令都受影响。
+
+输入不带参数的 "ppid" 命令可重置为默认行为
+
+警告：不要指定父PID为另一个桌面会话中的进程。这可能会破坏Beacon的一些功能和工作流程
+如果需要以另一个桌面会话进程作为父进程运行命令，请使用runu命令
+
+beacon> help runu
+Use: runu [pid] [命令] [参数]
+
+尝试以指定 [pid] 为父程序来执行 [命令]。该 [命令] 将以指定的 [pid] 进程的用户身份运行
+
+beacon> help spawnu
+Use: spawnu [pid] [监听器]
+
+尝试以指定 [pid] 为父程序来创建Beacon会话。该Beacon会话将以指定的 [pid] 进程的用户身份运行
+
+beacon> help inline-execute
+Use: inline-execute [/本地绝对路径/file.o] [参数]
+
+在此Beacon会话中运行Beacon对象文件。Beacon对象文件是按Cobalt Strike文档约定编写的C语言程序，最终被编译为目标文件
+
+beacon> help spunnel
+Use: spunnel [x86|x64] [主机] [端口] [/本地绝对路径/agent.bin]
+
+这是集启动和隧道与一体的命令。将在目标上执行本地第三方agent shellcode，并创建到其控制器的反向端口转发隧道
+从Cobalt Strike Teamserver发起到 [主机:端口] 的网络连接
+
+beacon> help spunnel_local
+Use: spunnel_local [x86|x64] [主机] [端口] [/本地绝对路径/agent.bin]
+
+这是集启动和隧道与一体的命令。将在目标上执行本地第三方agent shellcode，并创建到其控制器的反向端口转发隧道
+从Cobalt Strike客户端发起到 [主机:端口] 的网络连接
+
+beacon> help chromedump
+Use: chromedump
+
+使用Mimikatz从Google Chrome提取保存的账号密码和Cookies等凭证信息，该命令需要在用户权限下使用
