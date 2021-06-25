@@ -25,6 +25,8 @@ CobaltStrike 4.x通用白嫖及汉化加载器
 3. 修改teamserver和cobaltstrike脚本，在java的命令行中加入一个参数：  
     `-javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99`
 
+    **PS:** *如果需要用到agscript，则也需要修改其命令行加入上述参数*
+    
     **3a4425490f389aeec312bdd758ad2b99**即4.3版本的Sleeved解密key，如果需要加载其他版本或自己修改过key，请修改为相应的解密key
     
     teamserver完整命令行为：
@@ -43,6 +45,12 @@ CobaltStrike 4.x通用白嫖及汉化加载器
    >java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99 -jar cobaltstrike.jar
    
 6. 对于仅想使用破解功能的朋友，只需删除resources文件夹和scripts文件夹即可去除汉化
+
+7. 客户端和服务端都需要使用CSAgent加载，否则会出现版本不匹配问题，另外如果使用headless客户端agscript，也需要修改其命令行参数用CSAgent加载
+   
+   版本不匹配错误提示：
+   
+   ![版本不匹配](/images/9version.jpg?raw=true "版本不匹配")
 
 ## 效果
 主界面
