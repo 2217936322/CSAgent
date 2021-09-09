@@ -14,43 +14,15 @@ CobaltStrike 4.x通用白嫖及汉化加载器
    针对界面的各类说明、标签汉化，全部写入配置文件中，后续版本只需修改这部分配置即可，无需再修改java代码
 
 ## 使用方法
-1. 下载附件CSAgent.zip解压后放到cobaltstrike.jar同一个目录，确保CSAgent.jar、resources文件夹、scripts文件夹和cobaltstrike.jar处于同级目录
+1. 下载CSAgent.zip解压，将原版cobaltstrike.jar放到解压目录中，确保CSAgent.jar、resources文件夹、scripts文件夹和cobaltstrike.jar处于同级目录
 
-2. 从javassist官网[https://www.javassist.org/](https://www.javassist.org/)下载javassist，解压后将**javassist.jar**放到和CSAgent.jar同目录
-   
-   文件目录结构类似： 
+    ![文件目录结构](/images/8tree.jpg?raw=true "文件目录结构")
 
-   ![文件目录结构](/images/8tree.jpg?raw=true "文件目录结构")
-   
-3. 修改teamserver和cobaltstrike脚本，在java的命令行中加入一个参数：  
-    `-javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99`
+4. 替换cobaltstrike、teamserver、agscript、c2lint、cobaltstrike.bat文件中的解密key，目前内置的key为4.3版本
 
-    **PS:** *如果需要用到agscript，则也需要修改其命令行加入上述参数*
-    
-    **3a4425490f389aeec312bdd758ad2b99**即4.3版本的Sleeved解密key，如果需要加载其他版本或自己修改过key，请修改为相应的解密key
-    
-    teamserver完整命令行为：
-    
-    >java -XX:ParallelGCThreads=4 -Dcobaltstrike.server_port=50050 -Dcobaltstrike.server_bindto=0.0.0.0 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=123456 -server -XX:+AggressiveHeap -XX:+UseParallelGC -classpath cobaltstrike.jar -Duser.language=en -javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99 server.TeamServer $*
-    
-    cobaltstrike完整命令行为：
-    
-    >java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99 -jar cobaltstrike.jar $*
-    
-4. 修改完成后即可正常使用teamserver和cobaltstrike脚本启动，用法与以前无任何差别
+3. 正常使用teamserver和cobaltstrike脚本启动即可，用法与以前无任何差别，windows使用cobaltstrike.bat启动
 
-5. Windows下不能直接双击cobaltstrike.exe启动，否则无法加载CSAgent.jar导致没有汉化
-   需要将java.exe目录添加到系统环境变量，然后在cmd中使用下面命令启动客户端：
-   
-   >java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -javaagent:CSAgent.jar=3a4425490f389aeec312bdd758ad2b99 -jar cobaltstrike.jar
-   
-6. 对于仅想使用破解功能的朋友，只需删除resources文件夹和scripts文件夹即可去除汉化
-
-7. 客户端和服务端都需要使用CSAgent加载，否则会出现版本不匹配问题，另外如果使用headless客户端agscript，也需要修改其命令行参数用CSAgent加载
-   
-   版本不匹配错误提示：
-   
-   ![版本不匹配](/images/9version.jpg?raw=true "版本不匹配")
+4. 对于仅想使用破解功能的朋友，只需删除resources文件夹和scripts文件夹即可去除汉化
 
 ## 效果
 主界面
