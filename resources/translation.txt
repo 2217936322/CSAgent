@@ -6,6 +6,15 @@ This is the connect dialog. You should use it to connect to a Cobalt Strike (Agg
 New Profile	新建配置
 Connect		连接
 Help		帮助
+Alias:		别名
+Alias Names			显示别名
+Host Names			显示主机
+Names:				名称:
+View Aliases		显示别名
+Active Server:		当前服务器:
+Reconnect			重新连接
+Rename				重命名
+Disconnect			断开连接
 
 Add			添加
 Remove		删除
@@ -20,7 +29,6 @@ Paste		粘贴
 Clear		清空
 Export		导出
 Close		关闭
-<html><body><strong>Disconnected from server</strong></body></html>		<html><body><strong>已从服务器断开连接</strong></body></html>
 Choose		选择
 Help		帮助
 Sync Files	下载到本地
@@ -473,8 +481,9 @@ Manage Covert VPN Interfaces		管理Covert VPN网卡
 [regex] Exported data to (.*)		已导出数据到${1}
 [regex] Report (.*) saved			报告文件${1}已保存
 [regex] Imported (.*) hosts?		已导入${1}个目标
+# bug 加载到翻译时filo，所以更通配的放前面
+# [regex] Saved (.*)					已保存至${1}
 [regex] Saved (.*) to_LF_(.*)		已保存${1}文件至_LF_${2}
-[regex] Saved (.*)					已保存至${1}
 [regex] Updated and restarted listener: (.*)		已更新并重启监听器: ${1}
 [regex] Reloaded (.*)				已重新加载${1}
 [regex] Clone of (.*) is empty._LF_Try to connect with HTTPS instead.		${1} 克隆结果为空，_LF_请使用HTTPS重试。
@@ -501,3 +510,5 @@ Manage Covert VPN Interfaces		管理Covert VPN网卡
 
 # setLable目前不支持regex
 # [regex] <html><body><font color="#8b0000"><strong>ERROR!</strong></font> (.*) <font color="#8b0000">pivot session does not exist</font></body></html>				<html><body><font color="#8b0000"><strong>错误!</strong></font> ${1} <font color="#8b0000">代理中转会话不存在</font></body></html>
+# aggressor.AggressorClient
+# [regex] Disconnected from server (.*)		已从服务器${1}断开连接

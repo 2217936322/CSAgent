@@ -66,60 +66,24 @@ public class PreMain {
                             "common.SleevedResource.Setup(hex2bytes(\"" + hexkey + "\"));" +
                             "}");
                     return cls.toBytecode();
-                } else if (className.equals("aggressor/Aggressor") || className.equals("server/TeamServer") || className.equals("aggressor/headless/Start")) {
-                    // Java 12无法修改final字段
-                    // 解决方案 https://github.com/powermock/powermock/pull/1010/commits/66ce9f77215bae68b45f35481abc8b52a5d5b6ae
+                } else if (className.equals("common/MudgeSanity")) {
                     CtClass cls = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
-                    CtMethod mfunc = cls.getDeclaredMethod("main");
-                    classPool.importPackage("java.lang.reflect");
-                    mfunc.insertBefore("" +
-                            "Field field = aggressor.Aggressor.class.getDeclaredField(\"VERSION\");" +
-                            "field.setAccessible(true);" +
-
-                            // "Field modifiersField = Field.class.getDeclaredField(\"modifiers\");" +
-                            "Field modifiersField = null;" +
-                            "try {" +
-                            "    modifiersField = Field.class.getDeclaredField(\"modifiers\");" +
-                            "} catch (NoSuchFieldException e) {" +
-                            "    try {" +
-                            // https://www.javassist.org/tutorial/tutorial3.html#Varargs
-                            // Varargs直接转换为数组
-                            "        Method getDeclaredFields0 = Class.class.getDeclaredMethod(\"getDeclaredFields0\", new Class[]{boolean.class});" +
-                            "        boolean accessibleBeforeSet = getDeclaredFields0.isAccessible();" +
-                            "        getDeclaredFields0.setAccessible(true);" +
-                            "        Field[] fields = (Field[]) getDeclaredFields0.invoke(Field.class, new Object[]{Boolean.FALSE});" +
-                            "        getDeclaredFields0.setAccessible(accessibleBeforeSet);" +
-                            // javassist 不支持简写的for循环
-                            "        for (int i=0; i<fields.length; i++){" +
-                            "           Field field = fields[i];" +
-                            "            if (\"modifiers\".equals(field.getName())) {" +
-                            "                modifiersField = field;" +
-                            "                break;" +
-                            "            }" +
-                            "        }" +
-                            "        if (modifiersField == null) {" +
-                            "            throw e;" +
-                            "        }" +
-                            "    } catch (NoSuchMethodException ex) {" +
-                            "        e.addSuppressed(ex);" +
-                            "        throw e;" +
-                            "    } catch (InvocationTargetException ex) {" +
-                            "        e.addSuppressed(ex);" +
-                            "        throw e;" +
-                            "    }" +
-                            "}" +
-
-                            "modifiersField.setAccessible(true);" +
-                            "modifiersField.setInt(field, Modifier.STATIC);" +
-                            // 奇怪的bug，如果写成field.getModifiers() & ~Modifier.FINAL 还是FINAL，改成STATIC就是STATIC
-                            // 感觉是设置bit，而不是删除bit？
-                            // "System.out.println(field.toString());" 可以输出modifier信息
-                            // static java.lang.String aggressor.Aggressor.VERSION
-
-                            "String fieldValue = (String) field.get(null);" +
-                            // "System.out.println(fieldValue);" +
-                            "field.set(null, fieldValue.replace(\")\", \"-Twi1ight@T00ls.Net)\"));"
-                    );
+                    CtMethod mtd = cls.getDeclaredMethod("systemInformation");
+                    mtd.instrument(
+                            new ExprEditor() {
+                                public void edit(MethodCall m)
+                                        throws CannotCompileException {
+                                    if (m.getClassName().equals("java.lang.StringBuffer")
+                                            && m.getMethodName().equals("append")) {
+                                        m.replace("{" +
+                                                "if ($1.startsWith(\"Version:\")) {" +
+                                                "   $1 += \"Loader: https://github.com/Twi1ight/CSAgent\\n\";" +
+                                                "}" +
+                                                "$_ = $proceed($$);" +
+                                                "}");
+                                    }
+                                }
+                            });
                     return cls.toBytecode();
                 } else if (className.equals("beacon/BeaconCommands")) {
                     if (Files.notExists(Paths.get("resources/bhelp.txt"))) {
