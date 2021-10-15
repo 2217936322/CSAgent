@@ -18,7 +18,16 @@ CobaltStrike 4.x通用白嫖及汉化加载器
 
     ![文件目录结构](/images/8tree.jpg?raw=true "文件目录结构")
 
-4. 替换cobaltstrike、teamserver、agscript、c2lint、cobaltstrike.bat文件中的解密key，目前内置的key为4.3版本
+2. 替换cobaltstrike、teamserver、agscript、c2lint、cobaltstrike.bat文件中的解密key，目前内置的key为4.4版本
+
+    各个版本的官方解密key：
+    ```
+    4.0 1be5be52c6255c33558e8a1cb667cb06
+    4.1 80e32a742060b884419ba0c171c9aa76
+    4.2 b20d487addd4713418f2d5a3ae02a7a0
+    4.3 3a4425490f389aeec312bdd758ad2b99
+    4.4 5e98194a01c6b48fa582a6a9fcbb92d6
+    ```
 
 3. 正常使用teamserver和cobaltstrike脚本启动即可，用法与以前无任何差别，windows使用cobaltstrike.bat启动
 
